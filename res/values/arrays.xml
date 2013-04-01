@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="cMarkers">
+        <item>Infrarrojos</item>
+        <item>Domo</item>
+        <item>Fina</item>
+        <item>Bala</item>
+    </string-array>
+    
+    <string-array name="cVigilancia">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    
+    <string-array name="cEstado">
+        <item>Public</item>
+        <item>Private</item>
+    </string-array>
+    
+</resources>

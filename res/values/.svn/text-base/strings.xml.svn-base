@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Camera Map</string>
+    <string name="form">Camera Map: Upload camera</string>
+    <string name="map">Camera Map: View Google Maps</string>
+    <string name="camera">Camera Map: Gallery</string>
+    <string name="login">Camera Map: Login</string>
+    <string name="createAccount">Camera Map: Create Account</string>
+    <string name="cameraType">Camera type</string>
+    <string name="cameraAlert">Camera alert</string>
+    <string name="cameraState">Camera state</string>
+    <string name="mQuit">QUIT</string>
+    <string name="mUpload">UPLOAD</string>
+    <string name="mAbout">ABOUT</string>
+    <string name="mStreet">STREET VIEW</string>
+    <string name="mSat">SATELLITE VIEW</string>
+	<string name="cameraAR">Camera Map: Augmented Reality</string>
+	<string name="auth_url">http://cameramap.addsensor.com/accounts/iphone_user_check/</string>
+</resources>

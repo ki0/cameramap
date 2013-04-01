@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>		
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+	<ImageView  
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" 
+        android:scaleType="center"
+        android:src="@drawable/cameramap_splash_screen" />
+
+	<Button
+		android:id="@+id/loginB"
+		android:layout_width="160dip"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="5dip"
+		android:layout_gravity="bottom"
+		android:text="Login"
+	/>
+	<Button
+		android:id="@+id/createB"
+		android:layout_width="160dip"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="5dip"
+		android:layout_gravity="right|bottom"
+		android:text="Create Account"
+	/>
+</FrameLayout>

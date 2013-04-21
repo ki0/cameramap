@@ -2,7 +2,7 @@ package com.addsensor.CameraMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PixelFormat;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -43,7 +43,7 @@ public class CameraAR extends Activity {
 			public void surfaceChanged( SurfaceHolder holder, int format, int width, int height ) {
 		      Parameters params = camera.getParameters();
 		      params.setPreviewSize( width, height );
-		      params.setPictureFormat( PixelFormat.JPEG );
+		      params.setPictureFormat( ImageFormat.JPEG );
 		              camera.setParameters( params );
 		              camera.startPreview();
 			}
@@ -67,13 +67,14 @@ public class CameraAR extends Activity {
 			}
 		};
 		
+		@SuppressWarnings("deprecation")
 		public CustomCameraView( Context context ) {
 			super( context );
 			previewHolder = this.getHolder();
 	        previewHolder.setType( SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS );
 	        previewHolder.addCallback( surfaceHolderListener );   
 			sensorMan = (SensorManager) context.getSystemService( Context.SENSOR_SERVICE) ;
-			sensorMan.registerListener( listener, sensorMan.getDefaultSensor(SensorManager.SENSOR_ORIENTATION), SensorManager.SENSOR_DELAY_FASTEST );
+			sensorMan.registerListener( listener, sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST );
 		}
 	}
 }

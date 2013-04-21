@@ -86,8 +86,11 @@ public class CameraMap extends MapActivity {
 		// Segun la opcion seleccionada pues haremos una funcion u otra.
 		switch(iMenu.getItemId()) {
 		case(STREET):
-			mapView.setSatellite(false);
-    		mapView.setStreetView(true);
+			if ( mapView.isSatellite()){
+				mapView.setSatellite(false);
+			} else {
+				mapView.setSatellite(true);
+			}
     		return true;
 		case(SAT):
 			mapView.setSatellite(true);

@@ -219,7 +219,7 @@ public class Login extends Activity {
 			
 			// chicos, este resource me viene como int, no veo como hacerlo string
 			//HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
-			String uri = "http://cameramap.addsensor.com/accounts/iphone_user_check/";
+			String uri = "http://cameramap.addsensor.com:8000/accounts/iphone_user_check/";
 			HttpPost httppost = new HttpPost( URI.create(uri) );
 
 			try {

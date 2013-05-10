@@ -16,4 +16,18 @@
     <string name="mSat">SATELLITE VIEW</string>
 	<string name="cameraAR">Camera Map: Augmented Reality</string>
 	<string name="auth_url">http://cameramap.addsensor.com/accounts/iphone_user_check/</string>
+	<string name="background_image">background</string>
+	<string name="login_txt">Login:</string>
+	<string name="pass_txt">Password:</string>
+	<string name="login_button">Login</string>
+	<string name="checkbox_txt">remember my account</string>
+	<string name="account_name">Name:</string>
+	<string name="account_sur">Surname:</string>
+	<string name="account_user">Username:</string>
+	<string name="account_email">Email:</string>
+	<string name="account_pass">Password:</string>
+	<string name="account_button">Create Account</string>
+	<string name="account_pass2">Repeat</string>
+	<string name="main_login">Login</string>
+	<string name="main_create">Create Account</string>
 </resources>

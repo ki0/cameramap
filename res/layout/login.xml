@@ -5,68 +5,64 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
   
-  	<ImageView  
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent" 
-        android:scaleType="center"
-        android:src="@drawable/cameramap_splash_screen" 
-    />
+  	<ImageView
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="fill_parent"
+  	    android:contentDescription="@string/background_image"
+  	    android:scaleType="center"
+  	    android:src="@drawable/cameramap_splash_screen" />
   
   	<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="15dip"
-		android:layout_y="260dip"
-		android:textSize="12px"
-        android:text="Login: "
-    />  
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content"
+  	    android:layout_x="15dip"
+  	    android:layout_y="260dip"
+  	    android:text="@string/login_txt"
+  	    android:textSize="14sp" />
     
     <EditText
         android:id="@+id/login"
         android:layout_width="215dip"
         android:layout_height="wrap_content"
         android:layout_x="90dip"
-		android:layout_y="250dip"
-		android:textSize="12px"
-		android:singleLine="true"
-    />
+        android:layout_y="250dip"
+        android:inputType="text"
+        android:singleLine="true" />
     
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_x="15dip"
-		android:layout_y="310dip"
-		android:textSize="12px"
-        android:text="Password: "
-    />  
+        android:layout_y="310dip"
+        android:text="@string/pass_txt"
+        android:textSize="14sp" />
     
     <EditText
         android:id="@+id/pass"
         android:layout_width="215dip"
         android:layout_height="wrap_content"
         android:layout_x="90dip"
-		android:layout_y="300dip"
-		android:textSize="12px"
-		android:singleLine="true"
-		android:password="true"
-    />
+        android:layout_y="300dip"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textSize="14sp" />
     
-    <CheckBox android:id="@+id/checkbox"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_x="90dip"
-		android:layout_y="340dip"
-		android:textSize="12px"
-    	android:text="  remember my account" 
-    />
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="90dip"
+        android:layout_y="340dip"
+        android:text="@string/checkbox_txt"
+        android:textSize="13sp" />
     	
    	<Button
-		android:id="@+id/loginButton"
-		android:layout_width="290dip"
-		android:layout_height="wrap_content"
-		android:layout_x="15dip"
-		android:layout_y="380dip"
-		android:textSize="12px"
-		android:text="login"
-	/>
+   	    android:id="@+id/loginButton"
+   	    android:layout_width="290dip"
+   	    android:layout_height="wrap_content"
+   	    android:layout_x="15dip"
+   	    android:layout_y="380dip"
+   	    android:text="@string/login_button"
+   	    android:textSize="14sp" />
+
 </AbsoluteLayout>

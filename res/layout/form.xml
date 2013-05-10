@@ -3,132 +3,133 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
+
 	<Button
-		android:id="@+id/explorar"
-		android:layout_width="160dip"
-		android:layout_height="wrap_content"
-		android:layout_x="0dip"
-		android:layout_y="5dip"
-		android:textSize="12px"
-		android:text="search..."
-	/>
+	    android:id="@+id/explorar"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="0dip"
+	    android:layout_y="5dip"
+	    android:text="search..."
+	    android:textSize="14sp" />
+
 	<Button
-		android:id="@+id/camera"
-		android:layout_width="160dip"
-		android:layout_height="wrap_content"
-		android:layout_x="160dip"
-		android:layout_y="5dip"
-		android:textSize="12px"
-		android:text="camera..."
-	/>
+	    android:id="@+id/camera"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="160dip"
+	    android:layout_y="5dip"
+	    android:text="camera..."
+	    android:textSize="14sp" />
+
+	<Button
+	    android:id="@+id/upload"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="0dp"
+	    android:layout_y="396dp"
+	    android:text="Upload..."
+	    android:textSize="14sp" />
+
+	<Button
+	    android:id="@+id/vMap"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="159dp"
+	    android:layout_y="396dp"
+	    android:text="ViewMap"
+	    android:textSize="14sp" />
+
 	<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="15dip"
-		android:layout_y="65dip"
-		android:textSize="12px"
-        android:text="Type of camera:"
-    />  
-	<Spinner 
-        android:id="@+id/tipo"
-        android:layout_width="160dip"
-        android:layout_height="wrap_content"
-        android:layout_x="160dip"
-		android:layout_y="55dip"
-		android:textSize="12px"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/cameraType"
-    />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="15dip"
-		android:layout_y="115dip"
-		android:textSize="12px"
-        android:text="Alert of vigilance:"
-    />  
-    <Spinner 
-        android:id="@+id/aviso"
-        android:layout_width="160dip"
-        android:layout_height="wrap_content"
-        android:layout_x="160dip"
-		android:layout_y="100dip"
-		android:textSize="12px"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/cameraAlert"
-    />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="15dip"
-		android:layout_y="160dip"
-		android:textSize="12px"
-        android:text="Private/Public:"
-    />  
-    <Spinner 
-        android:id="@+id/estado"
-        android:layout_width="160dip"
-        android:layout_height="wrap_content"
-        android:layout_x="160dip"
-		android:layout_y="145dip"
-		android:textSize="12px"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/cameraState"
-    />
-  	<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="15dip"
-		android:layout_y="215dip"
-		android:textSize="12px"
-        android:text="Location:"
-    />
-    <EditText
-        android:id="@+id/eLocation"
-        android:layout_width="220dip"
-        android:layout_height="wrap_content"
-        android:layout_x="100dip"
-		android:layout_y="200dip"
-		android:textSize="12px"
-		android:singleLine="true"
-		android:inputType="textPostalAddress|textLongMessage"
-    />
-  	
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="13dp"
+	    android:layout_y="74dp"
+	    android:text="Type of camera:"
+	    android:textSize="14sp" />
+
+	<Spinner
+	    android:id="@+id/tipo"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="158dp"
+	    android:layout_y="58dp"
+	    android:drawSelectorOnTop="true"
+	    android:prompt="@string/cameraType"
+	    android:textSize="12px" />
+
 	<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="15dip"
-		android:layout_y="265dip"
-		android:textSize="12px"
-        android:text="Comments:"
-    />
-    <EditText
-        android:id="@+id/eComen"
-        android:layout_width="220dip"
-        android:layout_height="wrap_content"
-        android:layout_x="100dip"
-		android:layout_y="250dip"
-		android:textSize="12px"
-		android:inputType="textLongMessage"		
-		android:singleLine="true"
-    />
-    <Button
-		android:id="@+id/upload"
-		android:layout_width="160dip"
-		android:layout_height="wrap_content"
-		android:layout_x="0dip"
-		android:layout_y="300dip"
-		android:textSize="12px"
-		android:text="Upload..."
-	/>
-	<Button
-		android:id="@+id/vMap"
-		android:layout_width="160dip"
-		android:layout_height="wrap_content"
-		android:layout_x="160dip"
-		android:layout_y="300dip"
-		android:textSize="12px"
-		android:text="ViewMap"
-	/>
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="15dp"
+	    android:layout_y="322dp"
+	    android:text="Comments:"
+	    android:textSize="14sp" />
+
+	<EditText
+	    android:id="@+id/eComen"
+	    android:layout_width="220dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="98dp"
+	    android:layout_y="311dp"
+	    android:ems="10"
+	    android:inputType="textLongMessage"
+	    android:singleLine="true"
+	    android:textSize="12px" />
+
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="16dp"
+	    android:layout_y="261dp"
+	    android:text="Location:"
+	    android:textSize="14sp" />
+
+	<EditText
+	    android:id="@+id/eLocation"
+	    android:layout_width="220dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="98dp"
+	    android:layout_y="250dp"
+	    android:ems="10"
+	    android:inputType="textPostalAddress|textLongMessage"
+	    android:singleLine="true"
+	    android:textSize="12px" />
+
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="16dp"
+	    android:layout_y="194dp"
+	    android:text="Private/Public:"
+	    android:textSize="14sp" />
+
+	<Spinner
+	    android:id="@+id/estado"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="158dp"
+	    android:layout_y="171dp"
+	    android:drawSelectorOnTop="true"
+	    android:prompt="@string/cameraState"
+	    android:textSize="12px" />
+
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="13dp"
+	    android:layout_y="132dp"
+	    android:text="Alert of vigilance:"
+	    android:textSize="14sp" />
+
+	<Spinner
+	    android:id="@+id/aviso"
+	    android:layout_width="160dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="158dp"
+	    android:layout_y="111dp"
+	    android:drawSelectorOnTop="true"
+	    android:prompt="@string/cameraAlert"
+	    android:textSize="12px" />
 	
 </AbsoluteLayout>

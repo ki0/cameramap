@@ -8,119 +8,127 @@
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent" 
         android:scaleType="center"
+        android:contentDescription="@string/background_image"
         android:src="@drawable/cameramap_splash_screen" 
     />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_x="5dip"
-		android:layout_y="115dip"
-		android:textSize="12px"
-        android:text="Name: "
-    />  
+        android:layout_y="115dip"
+        android:text="@string/account_name"
+        android:textSize="14sp" />
+  
     <EditText
         android:id="@+id/name"
         android:layout_width="215dip"
         android:layout_height="wrap_content"
         android:layout_x="100dip"
-		android:layout_y="105dip"
-		android:textSize="12px"
-		android:singleLine="true"
-    />
+        android:layout_y="105dip"
+        android:inputType="text"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_x="5dip"
-		android:layout_y="160dip"
-		android:textSize="12px"
-        android:text="Surname: "
-    />  
+        android:layout_y="160dip"
+        android:text="@string/account_sur"
+        android:textSize="14sp" />
+  
     <EditText
         android:id="@+id/surname"
         android:layout_width="215dip"
         android:layout_height="wrap_content"
         android:layout_x="100dip"
-		android:layout_y="150dip"
-		android:textSize="12px"
-		android:singleLine="true"
-    />
+        android:layout_y="150dip"
+        android:inputType="text"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_x="5dip"
-		android:layout_y="205dip"
-		android:textSize="12px"
-        android:text="User name: "
-    />  
-    <EditText
-        android:id="@+id/uname"
-        android:layout_width="215dip"
-        android:layout_height="wrap_content"
-        android:layout_x="100dip"
-		android:layout_y="195dip"
-		android:textSize="12px"
-		android:singleLine="true"
-    />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="5dip"
-		android:layout_y="250dip"
-		android:textSize="12px"
-        android:text="Email: "
-    />  
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="215dip"
-        android:layout_height="wrap_content"
-        android:layout_x="100dip"
-		android:layout_y="240dip"
-		android:textSize="12px"
-		android:singleLine="true"
-    />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="5dip"
-		android:layout_y="295dip"
-		android:textSize="12px"
-        android:text="Password:"
-    />   
+        android:layout_y="295dip"
+        android:text="@string/account_pass"
+        android:textSize="14sp" />
+   
     <EditText
         android:id="@+id/pass"
         android:layout_width="215dip"
         android:layout_height="wrap_content"
         android:layout_x="100dip"
-		android:layout_y="285dip"
-		android:textSize="12px"
-		android:singleLine="true"
-		android:password="true"
-    />
+        android:layout_y="285dip"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_x="5dip"
-		android:layout_y="340dip"
-		android:textSize="12px"
-        android:text="Repeat Password:"
-    />  
+        android:layout_y="340dip"
+        android:text="@string/account_pass2"
+        android:textSize="14sp" />
+  
     <EditText
         android:id="@+id/rpass"
         android:layout_width="215dip"
         android:layout_height="wrap_content"
         android:layout_x="100dip"
-		android:layout_y="330dip"
-		android:textSize="12px"
-		android:singleLine="true"
-		android:password="true"
-    />
+        android:layout_y="330dip"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
 	<Button
-		android:id="@+id/caccountButton"
-		android:layout_width="290dip"
-		android:layout_height="wrap_content"
-		android:layout_x="15dip"
-		android:layout_y="380dip"
-		android:textSize="12px"
-		android:text="Create Account"
-	/> 
+	    android:id="@+id/caccountButton"
+	    android:layout_width="290dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="15dip"
+	    android:layout_y="380dip"
+	    android:text="@string/account_button"
+	    android:textSize="14sp" />
+
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="6dp"
+	    android:layout_y="206dp"
+	    android:text="@string/account_email"
+	    android:textSize="14sp" />
+
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_x="6dp"
+	    android:layout_y="251dp"
+	    android:text="@string/account_user"
+	    android:textSize="14sp" />
+
+	<EditText
+	    android:id="@+id/email"
+	    android:layout_width="215dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="100dp"
+	    android:layout_y="196dp"
+	    android:ems="10"
+	    android:inputType="textEmailAddress"
+	    android:singleLine="true"
+	    android:textSize="14sp" />
+
+	<EditText
+	    android:id="@+id/uname"
+	    android:layout_width="215dip"
+	    android:layout_height="wrap_content"
+	    android:layout_x="101dp"
+	    android:layout_y="238dp"
+	    android:ems="10"
+	    android:inputType="text"
+	    android:singleLine="true"
+	    android:textSize="14sp" />
+ 
 </AbsoluteLayout>

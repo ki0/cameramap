@@ -30,4 +30,13 @@
 	<string name="account_pass2">Repeat</string>
 	<string name="main_login">Login</string>
 	<string name="main_create">Create Account</string>
+	<string name="search_form">search...</string>
+	<string name="camera_form">camera...</string>
+	<string name="upload_form">Upload</string>
+	<string name="viewmap_form">ViewMap</string>
+	<string name="type_form">Type of camera:</string>
+	<string name="comments_form">Comments:</string>
+	<string name="location_form">Location:</string>
+	<string name="state_form">Private/Public:</string>
+	<string name="alert_form">Alert of vigilance:</string>
 </resources>

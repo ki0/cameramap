@@ -10,7 +10,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_x="0dip"
 	    android:layout_y="5dip"
-	    android:text="search..."
+	    android:text="@string/search_form"
 	    android:textSize="14sp" />
 
 	<Button
@@ -19,7 +19,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_x="160dip"
 	    android:layout_y="5dip"
-	    android:text="camera..."
+	    android:text="@string/camera_form"
 	    android:textSize="14sp" />
 
 	<Button
@@ -28,7 +28,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_x="0dp"
 	    android:layout_y="396dp"
-	    android:text="Upload..."
+	    android:text="@string/upload_form"
 	    android:textSize="14sp" />
 
 	<Button
@@ -37,7 +37,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_x="159dp"
 	    android:layout_y="396dp"
-	    android:text="ViewMap"
+	    android:text="@string/viewmap_form"
 	    android:textSize="14sp" />
 
 	<TextView
@@ -45,7 +45,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_x="13dp"
 	    android:layout_y="74dp"
-	    android:text="Type of camera:"
+	    android:text="@string/type_form"
 	    android:textSize="14sp" />
 
 	<Spinner
@@ -56,14 +56,14 @@
 	    android:layout_y="58dp"
 	    android:drawSelectorOnTop="true"
 	    android:prompt="@string/cameraType"
-	    android:textSize="12px" />
+	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_x="15dp"
 	    android:layout_y="322dp"
-	    android:text="Comments:"
+	    android:text="@string/comments_form"
 	    android:textSize="14sp" />
 
 	<EditText
@@ -75,14 +75,14 @@
 	    android:ems="10"
 	    android:inputType="textLongMessage"
 	    android:singleLine="true"
-	    android:textSize="12px" />
+	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_x="16dp"
 	    android:layout_y="261dp"
-	    android:text="Location:"
+	    android:text="@string/location_form"
 	    android:textSize="14sp" />
 
 	<EditText
@@ -94,14 +94,14 @@
 	    android:ems="10"
 	    android:inputType="textPostalAddress|textLongMessage"
 	    android:singleLine="true"
-	    android:textSize="12px" />
+	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_x="16dp"
 	    android:layout_y="194dp"
-	    android:text="Private/Public:"
+	    android:text="@string/state_form"
 	    android:textSize="14sp" />
 
 	<Spinner
@@ -112,14 +112,14 @@
 	    android:layout_y="171dp"
 	    android:drawSelectorOnTop="true"
 	    android:prompt="@string/cameraState"
-	    android:textSize="12px" />
+	    android:textSize="14sp" />
 
 	<TextView
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_x="13dp"
 	    android:layout_y="132dp"
-	    android:text="Alert of vigilance:"
+	    android:text="@string/alert_form"
 	    android:textSize="14sp" />
 
 	<Spinner
@@ -130,6 +130,6 @@
 	    android:layout_y="111dp"
 	    android:drawSelectorOnTop="true"
 	    android:prompt="@string/cameraAlert"
-	    android:textSize="12px" />
+	    android:textSize="14sp" />
 	
 </AbsoluteLayout>

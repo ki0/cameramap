@@ -7,6 +7,7 @@
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent" 
         android:scaleType="center"
+        android:contentDescription="@string/background"
         android:src="@drawable/cameramap_splash_screen" />
 
 	<Button
@@ -15,14 +16,14 @@
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="5dip"
 		android:layout_gravity="bottom"
-		android:text="Login"
+		android:text="@string/main_login_button"
 	/>
 	<Button
 		android:id="@+id/createB"
 		android:layout_width="160dip"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="5dip"
-		android:layout_gravity="right|bottom"
-		android:text="Create Account"
+		android:layout_gravity="end|bottom"
+		android:text="@string/main_create_account_button"
 	/>
 </FrameLayout>

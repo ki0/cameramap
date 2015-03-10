@@ -7,15 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
-//import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
+
+//import android.util.Log;
 
 public class Form extends Activity {
 	int estado, tipo, vigilancia;
@@ -32,30 +33,30 @@ public class Form extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.form);
 		
-		// Inicializaci—n de los botones.
+		// Inicializacion de los botones.
 		bExplorer = (Button)this.findViewById(R.id.explorar);
 		bVmap = (Button)this.findViewById(R.id.vMap);
 		bCameraAR = (Button)this.findViewById(R.id.camera);
 		
-		// Inicializaci—n de los spinners.
+		// Inicializaciï¿½n de los spinners.
 		Spinner sTipo = (Spinner) findViewById(R.id.tipo);
         Spinner sVigilancia = (Spinner) findViewById(R.id.aviso);
         Spinner sEstado = (Spinner) findViewById(R.id.estado);
         
-        // Inicializaci—n de los cajas para introducir texto.
+        // Inicializacion de los cajas para introducir texto.
 		final EditText eLocation = (EditText) findViewById(R.id.eLocation);
 		final EditText eComen = (EditText) findViewById(R.id.eComen);
        
-		// Inicializaci—n del adaptador que mostrar‡ las opciones del spinner, al ser pulsado.
+		// Inicializacion del adaptador que mostrara las opciones del spinner, al ser pulsado.
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource (this, R.array.cMarkers, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sTipo.setAdapter(adapter);
         
-        // Funci—n que establece la opci—n seleccionada en los spinners.
+        // Funcion que establece la opcion seleccionada en los spinners.
         sTipo.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				// Devuele la opci—n que hayamos seleccionado
+				// Devuele la opcion que hayamos seleccionado
 				tipo = (int) arg0.getSelectedItemPosition();
 			}
 
@@ -107,10 +108,10 @@ public class Form extends Activity {
 			sEstado.setSelection(extras.getInt("estado"));
 		}
         
-		// Funci—n que cuando se pulsa el boton, establece el resultado del formulario para pasarselo al mapActivity. En caso,
-		// de que hayamos introducido una direcci—n pues estableceremos los campos del bundle para ser 
-		// pasados a la mapActivity, en caso contrario, el resultado es 1, y el mapActivity mostrar‡
-		// nuestra posici—n actual.
+		// Funciï¿½n que cuando se pulsa el boton, establece el resultado del formulario para pasarselo al mapActivity. En caso,
+		// de que hayamos introducido una direcciï¿½n pues estableceremos los campos del bundle para ser 
+		// pasados a la mapActivity, en caso contrario, el resultado es 1, y el mapActivity mostrara
+		// nuestra posicion actual.
         bVmap.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View arg0) {
         		

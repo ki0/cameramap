@@ -4,8 +4,10 @@ package com.addsensor.CameraMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class Camera extends Activity{
@@ -17,11 +19,11 @@ public class Camera extends Activity{
 	public boolean onCreateOptionsMenu (Menu menu){
 		super.onCreateOptionsMenu(menu);
 		
-		// Creamos y a–adimos los nuevos menus
+		// Creamos y aï¿½adimos los nuevos menus
 		MenuItem mQuit1 = menu.add (0, QUIT1, Menu.NONE, R.string.mQuit);
 		MenuItem mAbout = menu.add (0, ABOUT, Menu.NONE, R.string.mAbout);
 		
-		// A–adimos shortcuts
+		// Aï¿½adimos shortcuts
 		mQuit1.setShortcut('7', 'q');
 		mAbout.setShortcut('9', 'a');
 		
@@ -42,7 +44,6 @@ public class Camera extends Activity{
 		}
 		return false;		
 	}
-	 
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class Camera extends Activity{
         setContentView(R.layout.main);
         
         // Creamos el boton
-        // Le a–adimos la funcion a ejecutar cuando se clickea
+        // Le aï¿½adimos la funcion a ejecutar cuando se clickea
         Button login = (Button)this.findViewById(R.id.loginB);
         login.setOnClickListener(new View.OnClickListener(){
         	public void onClick(View arg0){
@@ -73,5 +74,4 @@ public class Camera extends Activity{
         	}
         });
     }
-	
 }

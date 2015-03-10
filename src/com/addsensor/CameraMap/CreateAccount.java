@@ -1,12 +1,16 @@
 package com.addsensor.CameraMap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,16 +24,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateAccount extends Activity {
 	
@@ -74,7 +75,7 @@ public class CreateAccount extends Activity {
 	 	super.onActivityResult(requestCode, resultCode, data);
  	}
 	
-	// Subclase encargada de realizar la conexi—n http y de gestionar el json
+	// Subclase encargada de realizar la conexion http y de gestionar el json
 	public class HttpConnCredentials extends AsyncTask<String, String, Void> {
 		public ProgressDialog progress;
 		public boolean ok = false;
@@ -104,7 +105,7 @@ public class CreateAccount extends Activity {
 		}
 		
 		protected void onPostExecute(Void Result) {
-			// Una vez hecho lo que quer’amos quitamos el ProgressBar
+			// Una vez hecho lo que queriamos quitamos el ProgressBar
 			if ( progress.isShowing() ) progress.dismiss();
 			
 			if (this.ok) {

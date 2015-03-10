@@ -1,14 +1,5 @@
 package com.addsensor.CameraMap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-//import android.R.string;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -36,6 +27,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+//import android.R.string;
 
 
 public class Login extends Activity { 
@@ -140,7 +141,7 @@ public class Login extends Activity {
 		super.onActivityResult( requestCode, resultCode, data );
 	}
 	
-	// Subclase encargada de realizar la conexi—n http y de gestionar el json
+	// Subclase encargada de realizar la conexion http y de gestionar el json
 	public class HttpConnCredentials extends AsyncTask<String, String, Void> {
 		public ProgressDialog progress;
 		public boolean ok = false;
@@ -175,7 +176,7 @@ public class Login extends Activity {
 		}
 		
 		protected void onPostExecute(Void Result) {
-			// Una vez hecho lo que quer’amos quitamos el ProgressBar
+			// Una vez hecho lo que queriamos quitamos el ProgressBar
 			if ( progress.isShowing() ) progress.dismiss();
 			
 			if (this.ok) {
@@ -189,8 +190,9 @@ public class Login extends Activity {
 				startActivity(startCameraMap);
 				finish();
 				
-			} else Toast.makeText( Login.this, "login ko, lechon", Toast.LENGTH_SHORT ).show();
-			return;
+			} else {
+                Toast.makeText(Login.this, "login ko, lechon", Toast.LENGTH_SHORT).show();
+            }
 		}
 		
 		public boolean checkLogin(String login, String pass) {
@@ -237,16 +239,16 @@ public class Login extends Activity {
 					InputStream inputStream = entity.getContent();
 					String result = convertStreamToString( inputStream );
 					Log.d( Login.TAG, "statusLine:" + response.getStatusLine() );
-					Log.d( Login.TAG, "response:" + result.toString() );
-					return new String ( result.toString() );
+					Log.d( Login.TAG, "response:" + result );
+					return result;
 				}
 
 			} catch ( ClientProtocolException e ) {
 				Log.v( Login.TAG, "proto:" + e.getMessage() );
-				return new String( e.getMessage().toString() );
-			} catch (IOException e) {
+				return e.getMessage();
+            } catch (IOException e) {
 				Log.v( Login.TAG, "IO:" + e.getMessage() );
-				return new String( e.getMessage().toString() );
+				return e.getMessage();
 			}
 			return "Ok";
 		}

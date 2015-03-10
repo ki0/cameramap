@@ -13,8 +13,10 @@
     />
     <TextView
         android:id="@+id/str_name"
-        android:paddingStart="35dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="50sp"
+        android:paddingRight="50sp"
+        android:paddingBottom="6sp"
+        android:layout_marginBottom="12sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/str_surname"
@@ -34,8 +36,10 @@
     />
     <TextView
         android:id="@+id/str_surname"
-        android:paddingStart="35dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="50sp"
+        android:paddingRight="50sp"
+        android:paddingBottom="6sp"
+        android:layout_marginBottom="0sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/input_uname"
@@ -55,8 +59,10 @@
     />
     <TextView
         android:id="@+id/str_uname"
-        android:paddingStart="35dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="50sp"
+        android:paddingRight="50sp"
+        android:paddingBottom="6sp"
+        android:layout_marginBottom="12sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/str_email"
@@ -76,8 +82,10 @@
     />
     <TextView
         android:id="@+id/str_email"
-        android:paddingStart="35dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="50sp"
+        android:paddingRight="50sp"
+        android:paddingBottom="6sp"
+        android:layout_marginBottom="12sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/str_pass"
@@ -97,8 +105,10 @@
     />
     <TextView
         android:id="@+id/str_pass"
-        android:paddingStart="35dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="50sp"
+        android:paddingRight="50sp"
+        android:paddingBottom="6sp"
+        android:layout_marginBottom="12sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/str_rpass"
@@ -118,8 +128,10 @@
     />
     <TextView
         android:id="@+id/str_rpass"
-        android:paddingStart="35dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="50sp"
+        android:paddingRight="50sp"
+        android:paddingBottom="1sp"
+        android:layout_marginBottom="12sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/caccountButton"
@@ -131,6 +143,7 @@
         android:id="@+id/intput_rpass"
         android:layout_width="215dip"
         android:layout_marginEnd="12sp"
+        android:layout_marginBottom="12sp"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/str_rpass"
         android:layout_above="@+id/caccountButton"

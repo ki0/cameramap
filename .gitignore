@@ -18,3 +18,18 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+.idea/*
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml

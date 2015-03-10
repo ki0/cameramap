@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:paddingStart="16dp"
+  android:paddingEnd="16dp">
+  
+  	<ImageView  
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" 
+        android:scaleType="center"
+        android:src="@drawable/cameramap_splash_screen"
+        android:contentDescription="@string/background" />
+  
+  	<TextView
+        android:id="@+id/login_text"
+        android:paddingStart="35dp"
+        android:paddingLeft="35dp"
+        android:paddingBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_text"
+        android:layout_alignStart="@+id/login_text"
+        android:layout_above="@+id/pass_text"
+		android:textSize="12sp"
+        android:text="@string/login_tag"
+    />  
+    
+    <EditText
+        android:inputType="text"
+        android:id="@+id/login"
+        android:layout_width="215dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pass"
+        android:layout_alignRight="@+id/login_text"
+        android:layout_alignEnd="@+id/login_text"
+		android:textSize="12sp"
+		android:singleLine="true"
+    />
+    
+    <TextView
+        android:id="@+id/pass_text"
+        android:paddingStart="35dp"
+        android:paddingLeft="35dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkbox"
+		android:textSize="12sp"
+        android:text="@string/pass_text"
+    />  
+    
+    <EditText
+        android:inputType="textPassword"
+        android:id="@+id/pass"
+        android:layout_width="215dip"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkbox"
+        android:layout_alignEnd="@+id/pass_text"
+		android:textSize="12sp"
+		android:singleLine="true"
+    />
+    
+    <CheckBox android:id="@+id/checkbox"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_above="@+id/loginButton"
+        android:layout_centerHorizontal="true"
+    	android:text="@string/checkbox_text"
+    />
+    	
+   	<Button
+		android:id="@+id/loginButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textSize="12sp"
+		android:text="@string/login_button"
+	/>
+</RelativeLayout>

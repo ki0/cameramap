@@ -21,12 +21,6 @@
     <string name="login_tag">Login:</string>
     <string name="checkbox_text">remember my account</string>
     <string name="pass_text">Password:</string>
-    <string name="caccount_button">Create Account</string>
-    <string name="caccount_rpass">Repeat Password:</string>
-    <string name="caccount_pass">Password:</string>
-    <string name="caccount_email">Email:</string>
-    <string name="caccount_uname">User name:</string>
-    <string name="caccount_surname">Surname:</string>
     <string name="account_name">Name:</string>
     <string name="main_create_account_button">Create Account</string>
     <string name="main_login_button">Login</string>

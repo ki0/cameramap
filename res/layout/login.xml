@@ -7,8 +7,7 @@
   
   	<ImageView  
         android:layout_width="fill_parent" 
-        android:layout_height="fill_parent" 
-        android:scaleType="center"
+        android:layout_height="fill_parent"
         android:src="@drawable/cameramap_splash_screen"
         android:contentDescription="@string/background" />
   
@@ -26,7 +25,7 @@
     />  
     
     <EditText
-        android:labelFor="@id/login"
+        android:labelFor="@+id/login"
         android:inputType="text"
         android:id="@+id/login"
         android:layout_width="215dip"

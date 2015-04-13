@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,15 +17,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import java.net.HttpURLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,9 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
 
 //import android.R.string;
 
@@ -156,12 +148,16 @@ public class Login extends Activity {
 		protected Void doInBackground(String... params) {
 			// Por debajo del ProgressBar hacemos el logeo
 			Log.d ( Login.TAG, "login: " + params[0] + "// pass: " + params[1] );
-			if ( checkLogin (params[0], params[1]) ) {
-				this.ok = true;
-				user = params[0];
-				pass = params[1];
-			} else this.ok = false;
-			Log.d ( Login.TAG, "TODO OK  " + this.ok );
+            try {
+                if ( checkLogin (params[0], params[1]) ) {
+                    this.ok = true;
+                    user = params[0];
+                    pass = params[1];
+                } else this.ok = false;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d ( Login.TAG, "TODO OK  " + this.ok );
 			return null;
 		}
 		
@@ -195,17 +191,15 @@ public class Login extends Activity {
             }
 		}
 		
-		public boolean checkLogin(String login, String pass) {
+		public boolean checkLogin(String login, String pass) throws IOException {
 			//{"login_status": {"errno": 0, "errstr": "OK"}}	
 			String res = postLogin( login, pass );
 			
 			try {
-				Log.d( Login.TAG, "request:" + res );
 				JSONObject lStatus = new JSONObject( res );
-				int errno  = lStatus.getJSONObject( "login_status" ).getInt( "errno" );
-				String errorStr = lStatus.getJSONObject( "login_status" ).getString( "errstr" );
+			    String username  = lStatus.getString("username");
 				Log.d( Login.TAG, "Stop progress bar" );	
-				if ( errno == 0 && errorStr.equalsIgnoreCase("OK") ) {
+				if ( login.equals(username) ) {
 					return true;
 				}			
 				
@@ -215,30 +209,33 @@ public class Login extends Activity {
 			return false;
 		}
 		
-		private String postLogin( String login, String pass ) {
-			// Create a new HttpClient and Post Header
-			HttpClient httpclient = new DefaultHttpClient();
+		private String postLogin( final String login, final String pass ) throws IOException {
+
+            String userPassword = login + ":" + pass;
+            String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT));
 			
 			// chicos, este resource me viene como int, no veo como hacerlo string
 			//HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
-			String uri = "http://cameramap.addsensor.com/accounts/iphone_user_check/";
-			HttpPost httppost = new HttpPost( URI.create(uri) );
+            URL url = new URL("http://cameramap.escalared.com/wp-json/users/me");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
 			try {
-				// Add your data
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-				nameValuePairs.add( new BasicNameValuePair("username", login) );
-				nameValuePairs.add( new BasicNameValuePair("password", pass) );
-				httppost.setEntity( new UrlEncodedFormEntity(nameValuePairs) );
+                urlConnection.setDoOutput(false);
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+                urlConnection.connect();
 				
 				// Execute HTTP Post Request
-				Log.d( Login.TAG, "request:" + uri );
-				HttpResponse response = httpclient.execute( httppost );
-				HttpEntity entity = response.getEntity();
-				if( entity != null ){
-					InputStream inputStream = entity.getContent();
+				Log.d( Login.TAG, "request:" + url.toString() );
+                Log.d( Login.TAG, "request_method:" + urlConnection.getRequestMethod() );
+                Log.d( Login.TAG, "response_status:" + urlConnection.getResponseCode() );
+                Log.d( Login.TAG, "response_message:" + urlConnection.getResponseMessage() );
+
+				if ( urlConnection.getResponseCode() == 200 ){
+					InputStream inputStream = urlConnection.getInputStream();
 					String result = convertStreamToString( inputStream );
-					Log.d( Login.TAG, "statusLine:" + response.getStatusLine() );
 					Log.d( Login.TAG, "response:" + result );
 					return result;
 				}
@@ -249,8 +246,10 @@ public class Login extends Activity {
             } catch (IOException e) {
 				Log.v( Login.TAG, "IO:" + e.getMessage() );
 				return e.getMessage();
-			}
-			return "Ok";
+			} finally {
+                urlConnection.disconnect();
+            }
+            return "KO";
 		}
 		private String convertStreamToString( InputStream is ) {
 			BufferedReader reader = new BufferedReader( new InputStreamReader(is) );

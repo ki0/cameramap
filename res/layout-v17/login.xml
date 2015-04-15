@@ -26,6 +26,7 @@
     />  
     
     <EditText
+        android:labelFor="@id/login"
         android:inputType="text"
         android:id="@+id/login"
         android:layout_width="215dip"
@@ -50,6 +51,7 @@
     />  
     
     <EditText
+        android:labelFor="@+id/pass"
         android:inputType="textPassword"
         android:id="@+id/pass"
         android:layout_width="215dip"

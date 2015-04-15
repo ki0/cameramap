@@ -67,7 +67,7 @@ public class Login extends Activity {
 									 int cpass = c.getColumnIndex("pass");
 									 if ( c.getString(clogin).equals(login.getText().toString()) ) {
 										 Log.d ( Login.TAG, "Rellenamos PASS" );
-										 pass.setText( (CharSequence) c.getString(cpass) );
+										 pass.setText( c.getString(cpass) );
 										 return true;
 									}
 								}

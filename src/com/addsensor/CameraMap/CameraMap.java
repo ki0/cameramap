@@ -2,7 +2,6 @@ package com.addsensor.CameraMap;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -10,7 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +28,6 @@ import java.util.Locale;
 public class CameraMap extends FragmentActivity implements OnMapReadyCallback {
 
 	LocationManager locationManager;
-	Drawable marker0, marker1, marker2, marker3, marker4;
 	Bundle d;
     GoogleMap map;
 	
@@ -199,9 +196,8 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback {
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.cmap);
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.mv);
+		this.setContentView(R.layout.cmap);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mv);
         mapFragment.getMapAsync(this);
 
 		d = new Bundle();
@@ -209,7 +205,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback {
 
 		locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-		setProvider();
+		this.setProvider();
 	}
 
     //
@@ -221,6 +217,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback {
 		
 		super.onActivityResult(requestCode, resultCode, data);
 		d = data.getExtras();
+        Log.d( CameraMap.TAG, "Bundle Login" + d);
 		
 		// Si no hemos devuelto una direccion (address) nos mostrar� nuestra posici�n actual,
 		// en caso contrario, actualizaremos el mapa con la direcci�n.

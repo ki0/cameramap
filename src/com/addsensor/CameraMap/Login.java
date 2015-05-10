@@ -16,8 +16,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 public class Login extends Activity {
 
     private static final String TAG = "LoginActivity";
@@ -33,7 +31,7 @@ public class Login extends Activity {
         final Button bLogin = (Button) findViewById(R.id.loginButton);
         final CameraAdapterDB db = new CameraAdapterDB(this);
 
-        final AsyncTask<String, String, Void> http = new HttpResultCredentials();
+
 
         login.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -74,6 +72,7 @@ public class Login extends Activity {
         bLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
+                final AsyncTask<String, String, Void> http = new HttpResultCredentials();
                 http.execute(login.getText().toString(), pass.getText().toString());
                 final Handler mHandler = new Handler();
                 final Runnable mUpdateResults = new Runnable() {

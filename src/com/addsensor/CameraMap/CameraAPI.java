@@ -53,17 +53,20 @@ public class CameraAPI  {
             e.printStackTrace();
         }
 
-        try {
-            JSONObject lStatus = new JSONObject( res );
-            String username  = lStatus.getString("username");
-            Log.d(CameraAPI.TAG, "Stop progress bar");
-            if ( this.getUser().equals(username) ) {
-                return true;
-            }
+        if ( res != null) {
+            try {
+                JSONObject lStatus = new JSONObject( res );
+                String username  = lStatus.getString("username");
+                Log.d(CameraAPI.TAG, "Stop progress bar");
+                if ( this.getUser().equals(username) ) {
+                    return true;
+                }
 
-        } catch ( JSONException e ) {
-            e.printStackTrace();
+            } catch ( JSONException e ) {
+                e.printStackTrace();
+            }
         }
+
         return false;
     }
 
@@ -94,7 +97,7 @@ public class CameraAPI  {
             if ( urlConnection.getResponseCode() == 200 ){
                 InputStream inputStream = urlConnection.getInputStream();
                 String result = convertStreamToString( inputStream );
-                Log.d( CameraAPI.TAG, "response:" + result );
+                Log.d(CameraAPI.TAG, "response:" + result);
                 return result;
             }
 

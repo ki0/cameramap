@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -30,6 +31,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import static com.google.android.gms.maps.CameraUpdateFactory.*;
 
 public class CameraMap extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
@@ -237,8 +240,10 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
         } else {
             hello = this.selectMarkers(4);
         }
+        map.clear();
         map.addMarker(hello.position(latLng));
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        CameraUpdate myLocation = CameraUpdateFactory.newLatLngZoom(latLng, 20.0f);
+        map.animateCamera(myLocation);
     }
 
     @Override

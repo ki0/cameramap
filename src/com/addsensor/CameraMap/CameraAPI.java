@@ -4,10 +4,6 @@ package com.addsensor.CameraMap;
 import android.util.Base64;
 import android.util.Log;
 
-
-
-import org.apache.http.client.ClientProtocolException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -100,10 +96,6 @@ public class CameraAPI  {
                 Log.d(CameraAPI.TAG, "response:" + result);
                 return result;
             }
-
-        } catch ( ClientProtocolException e ) {
-            Log.v( CameraAPI.TAG, "proto:" + e.getMessage() );
-            return e.getMessage();
         } catch (IOException e) {
             Log.v( CameraAPI.TAG, "IO:" + e.getMessage() );
             return e.getMessage();

@@ -2,7 +2,6 @@ package com.addsensor.CameraMap;
 
 import android.content.Intent;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
@@ -25,8 +24,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,8 +33,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-import static com.google.android.gms.maps.CameraUpdateFactory.*;
 
 public class CameraMap extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
@@ -49,11 +46,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	static final private int UPLOAD = Menu.FIRST + 2;
 	static final private int QUIT1 = Menu.FIRST + 3;
 	static final private int GET_CODE = 0;
-	/**
-	 * ATTENTION: This was auto-generated to implement the App Indexing API.
-	 * See https://g.co/AppIndexing/AndroidStudio for more information.
-	 */
-	private GoogleApiClient client;
 
 	// Establece que presionando una tecla hagamos zoom sobre el mapa
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -145,26 +137,17 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		Geocoder gc = new Geocoder(this, Locale.getDefault());
 
-		List<Address> locations;
+		List<Address> addresses;
 		try {
-			locations = gc.getFromLocationName(address, 5);
-			Address x = locations.get(0);
-			//updateWithNewLocation(x.getLatitude(), x.getLongitude());
+			addresses = gc.getFromLocationName(address, 5);
+			Address x = addresses.get(0);
+			Location location = new Location("");
+			location.setLatitude(x.getLatitude());
+			location.setLongitude(x.getLongitude());
+			handleNewLocation(location);
 		} catch (IOException e) {
-			Log.d("location:", "ERROR NO LOCATIONS");
+			Log.d(CameraMap.TAG, "ERROR NO LOCATIONS");
 		}
-	}
-
-	// Funci�n que establece un criterio para el proveedor del servicio de localizacion, normalmente el gps.
-	public Criteria setCriteria() {
-
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		criteria.setAltitudeRequired(false);
-		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(false);
-		criteria.setPowerRequirement(Criteria.POWER_LOW);
-		return criteria;
 	}
 
 	// Funcion que inicializa los parametros necesarios en el momento de la creaci�n de la activity 
@@ -177,19 +160,13 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mv);
 		mapFragment.getMapAsync(this);
 		map = mapFragment.getMap();
-		buildGoogleApiClient();
 		// Create the LocationRequest object
 		mLocationRequest = LocationRequest.create()
 				.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 				.setInterval(10 * 1000)        // 10 seconds, in milliseconds
 				.setFastestInterval(1 * 1000); // 1 second, in milliseconds
 		d = new Bundle();
-		//d = null;
-
-
-		// ATTENTION: This was auto-generated to implement the App Indexing API.
-		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+		buildGoogleApiClient();
 	}
 
 	//
@@ -210,7 +187,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			getLocationByAddress(d.getString("add").toString());
 		} else {
 			d = null;
-			//setProvider();
 		}
 	}
 
@@ -227,7 +203,9 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addConnectionCallbacks(this)
 				.addOnConnectionFailedListener(this)
-				.addApi(LocationServices.API).build();
+				.addApi(LocationServices.API)
+				.addApi(AppIndex.API)
+				.build();
 	}
 
 	@Override
@@ -258,8 +236,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		}
 		map.clear();
 		map.addMarker(hello.position(latLng));
-		CameraUpdate myLocation = CameraUpdateFactory.newLatLngZoom(latLng, 20.0f);
-		map.animateCamera(myLocation);
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20.0f));
 	}
 
 	@Override
@@ -301,7 +278,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
-		client.connect();
+		mGoogleApiClient.connect();
 		Action viewAction = Action.newAction(
 				Action.TYPE_VIEW, // TODO: choose an action type.
 				"CameraMap Page", // TODO: Define a title for the content shown.
@@ -312,7 +289,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 				// TODO: Make sure this auto-generated app deep link URI is correct.
 				Uri.parse("android-app://com.addsensor.CameraMap/http/host/path")
 		);
-		AppIndex.AppIndexApi.start(client, viewAction);
+		AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
 	}
 
 	@Override
@@ -331,7 +308,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 				// TODO: Make sure this auto-generated app deep link URI is correct.
 				Uri.parse("android-app://com.addsensor.CameraMap/http/host/path")
 		);
-		AppIndex.AppIndexApi.end(client, viewAction);
-		client.disconnect();
+		AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
+		mGoogleApiClient.disconnect();
 	}
 }

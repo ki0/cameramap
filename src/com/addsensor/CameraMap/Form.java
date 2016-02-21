@@ -27,6 +27,7 @@ public class Form extends Activity {
 	private Button bExplorer;
 	private Button bVmap;
 	private Button bCameraAR;
+	private Button bUpload;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class Form extends Activity {
 		bExplorer = (Button)this.findViewById(R.id.explorar);
 		bVmap = (Button)this.findViewById(R.id.vMap);
 		bCameraAR = (Button)this.findViewById(R.id.camera);
+		bUpload = (Button)this.findViewById(R.id.upload);
 		
 		// Inicializaci�n de los spinners.
 		Spinner sTipo = (Spinner) findViewById(R.id.tipo);
@@ -136,6 +138,8 @@ public class Form extends Activity {
         	}
         });
 
+		// Función que establece un listener en el botón para que cuando hagamos un click haga una llamada
+		// a la galería de Android.
         bExplorer.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View arg0) {
         		Intent aCameraGallery = new Intent(Intent.ACTION_GET_CONTENT, Form.this.targetResource);
@@ -151,6 +155,14 @@ public class Form extends Activity {
         		startActivityForResult(aCameraAR, GET_CODE);
         	}
         });
+
+		//Función que hace un http post contra el servidor de CameraMap, pasandole todos los parámetros
+		// del formulario.
+		bUpload.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+
+			}
+		});
 	}
 	
 	@Override

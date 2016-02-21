@@ -66,7 +66,7 @@ public class CameraAPI  {
         return false;
     }
 
-    private String postLogin( final String login, final String pass ) throws IOException {
+    protected String postLogin(final String login, final String pass) throws IOException {
 
         String userPassword = login + ":" + pass;
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT));
@@ -105,7 +105,7 @@ public class CameraAPI  {
         return null;
     }
 
-    private String convertStreamToString( InputStream is ) {
+    protected String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader( new InputStreamReader(is) );
         StringBuilder stringBuilder = new StringBuilder();
         String line;

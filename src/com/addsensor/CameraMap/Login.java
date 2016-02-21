@@ -1,7 +1,6 @@
 package com.addsensor.CameraMap;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -14,7 +13,6 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class Login extends Activity {
 
@@ -72,7 +70,7 @@ public class Login extends Activity {
         bLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                final AsyncTask<String, String, Void> http = new HttpResultCredentials();
+                final HttpResultCredentials http = new HttpResultCredentials(Login.this);
                 http.execute(login.getText().toString(), pass.getText().toString());
                 final Handler mHandler = new Handler();
                 final Runnable mUpdateResults = new Runnable() {
@@ -95,6 +93,12 @@ public class Login extends Activity {
                     }
                 };
                 t.start();
+                if (http.getHttpResult()) {
+
+                    Intent startCameraMap = new Intent(Login.this, CameraMap.class);
+                    startActivity(startCameraMap);
+                    finish();
+                }
             }
 
             // Cuando tengamos el resultado del login miramos si lo introducimos en la BD
@@ -117,51 +121,6 @@ public class Login extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public class HttpResultCredentials extends AsyncTask<String, String, Void> {
-        public ProgressDialog progress;
-        final CameraAPI api = new CameraAPI();
-
-        @Override
-        protected Void doInBackground(String... params) {
-            // Por debajo del ProgressBar hacemos el logeo
-            Log.d(Login.TAG, "login: " + params[0] + "// pass: " + params[1]);
-
-            api.setUser(params[0]);
-            api.setPass(params[1]);
-            if ( api.checkLogin() ) {
-                api.setStatusLogin(true);
-            } else api.setStatusLogin(false);
-            Log.d(Login.TAG, "TODO OK  " + api.getStatusLogin());
-            return null;
-        }
-
-        protected void onPreExecute() {
-            // Antes de lo que queremos hacer lanzamos el ProgressBar
-            progress = new ProgressDialog(Login.this);
-            progress.setTitle("Login in process");
-            progress.setMessage("Please wait...");
-            progress.setIndeterminate(true);
-            progress.setCancelable(false);
-            progress.show();
-        }
-
-        protected void onPostExecute(Void Result) {
-            // Una vez hecho lo que queriamos quitamos el ProgressBar
-            if (progress.isShowing()) progress.dismiss();
-
-            if ( api.getStatusLogin() ) {
-
-                Toast.makeText(Login.this, "login ok", Toast.LENGTH_SHORT).show();
-                Intent startCameraMap = new Intent(Login.this, CameraMap.class);
-                startActivity(startCameraMap);
-                finish();
-
-            } else {
-                Toast.makeText(Login.this, "login ko, lechon", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }
 

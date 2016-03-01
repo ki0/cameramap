@@ -79,11 +79,17 @@ public class Login extends Activity {
                     }
                 };
                 // Este thread espera hasta que el login ok, entonces guardamos en la bd.
-                Thread t = new Thread() {
+                new Thread() {
                     public void run() {
                         while (!http.getStatus().equals(AsyncTask.Status.FINISHED)) {
                             try {
                                 sleep(3);
+                                if (http.getHttpResult()) {
+
+                                    Intent startCameraMap = new Intent(Login.this, CameraMap.class);
+                                    startActivity(startCameraMap);
+                                    finish();
+                                }
                             } catch (InterruptedException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
@@ -91,14 +97,7 @@ public class Login extends Activity {
                         }
                         mHandler.post(mUpdateResults);
                     }
-                };
-                t.start();
-                if (http.getHttpResult()) {
-
-                    Intent startCameraMap = new Intent(Login.this, CameraMap.class);
-                    startActivity(startCameraMap);
-                    finish();
-                }
+                }.start();
             }
 
             // Cuando tengamos el resultado del login miramos si lo introducimos en la BD

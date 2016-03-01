@@ -3,7 +3,6 @@ package com.addsensor.CameraMap;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,7 +14,7 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
     private static final String TAG = "HttpResultCredentials";
     private ProgressDialog progress;
     private Context context;
-    private Boolean HttpStatus;
+    private Boolean HttpStatus = false;
     protected Activity activity;
     public final CameraAPI api = new CameraAPI();
 

@@ -13,19 +13,20 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CameraAPI  {
+public class CameraAPI {
     private static final String TAG = "CameraAPI";
     private String user;
     private String pass;
     private Boolean status;
 
+    private static final CameraAPI api = new CameraAPI();
+    public static CameraAPI getInstance() { return api; }
+
     public void setPass(String password){
         this.pass = password;
     }
 
-    private String getPass(){
-        return this.pass;
-    }
+    public String getPass(){ return this.pass; }
 
     public void setUser(String username){
         this.user = username;

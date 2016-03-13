@@ -16,7 +16,7 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
     private Context context;
     private Boolean HttpStatus = false;
     protected Activity activity;
-    public final CameraAPI api = new CameraAPI();
+    public final CameraAPI api = CameraAPI.getInstance();
 
     public Boolean getHttpResult(){ return this.HttpStatus; }
     private void setHttpResult(Boolean status){ this.HttpStatus = status; }

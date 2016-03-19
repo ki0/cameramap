@@ -30,14 +30,22 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
     @Override
     protected Void doInBackground(String... params) {
         // Por debajo del ProgressBar hacemos el logeo
-        Log.d(HttpResultCredentials.TAG, "login: " + params[0] + "// pass: " + params[1]);
+        Log.d(HttpResultCredentials.TAG, "login: " + params[0] + "// pass: " + params[1] + "// process: " + params[2]);
 
         api.setUser(params[0]);
         api.setPass(params[1]);
-        if ( api.checkLogin() ) {
-            api.setStatusLogin(true);
-        } else api.setStatusLogin(false);
-        Log.d(HttpResultCredentials.TAG, "TODO OK  " + api.getStatusLogin());
+        switch (params[2]){
+            case "login":
+                if ( api.checkLogin() ) {
+                    api.setStatusLogin(true);
+                } else api.setStatusLogin(false);
+                Log.d(HttpResultCredentials.TAG, "TODO OK  " + api.getStatusLogin());
+                break;
+            case "upload":
+                api.postUpload();
+                break;
+            default:
+        }
         return null;
     }
 

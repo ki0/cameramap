@@ -71,7 +71,7 @@ public class Login extends Activity {
 
             public void onClick(View arg0) {
                 final HttpResultCredentials http = new HttpResultCredentials(Login.this);
-                http.execute(login.getText().toString(), pass.getText().toString());
+                http.execute(login.getText().toString(), pass.getText().toString(), "login");
                 final Handler mHandler = new Handler();
                 final Runnable mUpdateResults = new Runnable() {
                     public void run() {

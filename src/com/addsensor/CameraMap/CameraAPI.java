@@ -106,6 +106,10 @@ public class CameraAPI {
         return null;
     }
 
+    protected String postUpload(){
+        return null;
+    }
+
     protected String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader( new InputStreamReader(is) );
         StringBuilder stringBuilder = new StringBuilder();

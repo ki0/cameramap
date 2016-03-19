@@ -174,10 +174,8 @@ public class Form extends Activity {
 		// del formulario.
 		bUpload.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
-
-				Log.d(Form.TAG, "user" + CameraAPI.getInstance().getUser());
 				final HttpResultCredentials http = new HttpResultCredentials(Form.this);
-				http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass());
+				http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload");
 				final Handler mHandler = new Handler();
 				final Runnable mUpdateResults = new Runnable() {
 					public void run() {
@@ -190,7 +188,6 @@ public class Form extends Activity {
 							try {
 								sleep(3);
 								if (http.getHttpResult()) {
-
 								}
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
@@ -202,7 +199,6 @@ public class Form extends Activity {
 				}.start();
 			}
 		});
-		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
 		client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 	}

@@ -4,11 +4,14 @@ package com.addsensor.CameraMap;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,8 +77,18 @@ public class CameraAPI {
 
         // chicos, este resource me viene como int, no veo como hacerlo string
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
-        URL url = new URL("http://cameramap.escalared.com/wp-json/users/me");
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        URL url = null;
+        try {
+            url = new URL("http://cameramap.escalared.com/wp-json/users/me");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             urlConnection.setDoOutput(false);
@@ -106,7 +119,69 @@ public class CameraAPI {
         return null;
     }
 
-    protected String postUpload(){
+    protected String postUpload( String data ) {
+
+        String userPassword = this.getUser() + ":" + this.getPass();
+        String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT));
+
+        // chicos, este resource me viene como int, no veo como hacerlo string
+        //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
+        URL url = null;
+        try {
+            url = new URL("http://cameramap.escalared.com/wp-json/posts");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        try {
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+            urlConnection.connect();
+
+            // Execute HTTP Post Request
+            Log.d(CameraAPI.TAG, "request:" + url.toString());
+            Log.d(CameraAPI.TAG, "request_method:" + urlConnection.getRequestMethod());
+            Log.d(CameraAPI.TAG, "response_status:" + urlConnection.getResponseCode());
+            Log.d(CameraAPI.TAG, "response_message:" + urlConnection.getResponseMessage());
+
+            outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
+            outputStream.write(data.getBytes());
+            outputStream.flush();
+
+            if (urlConnection.getResponseCode() == 201) {
+                inputStream = urlConnection.getInputStream();
+                String result = convertStreamToString(inputStream);
+                Log.d(CameraAPI.TAG, "response:" + result);
+                return result;
+            }
+        } catch (IOException e) {
+            Log.v(CameraAPI.TAG, "IO:" + e.getMessage());
+            return e.getMessage();
+        } finally {
+            urlConnection.disconnect();
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return null;
     }
 

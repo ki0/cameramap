@@ -42,7 +42,7 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
                 Log.d(HttpResultCredentials.TAG, "TODO OK  " + api.getStatusLogin());
                 break;
             case "upload":
-                api.postUpload();
+                api.postUpload(params[3]);
                 break;
             default:
         }

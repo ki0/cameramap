@@ -16,14 +16,19 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CameraAPI {
+public final class CameraAPI {
     private static final String TAG = "CameraAPI";
     private String user;
     private String pass;
     private Boolean status;
 
-    private static final CameraAPI api = new CameraAPI();
-    public static CameraAPI getInstance() { return api; }
+    private static CameraAPI api = null;
+    public static CameraAPI getInstance() {
+        if ( api == null){
+            api = new CameraAPI();
+        }
+        return api;
+    }
 
     public void setPass(String password){
         this.pass = password;
@@ -66,7 +71,6 @@ public class CameraAPI {
                 e.printStackTrace();
             }
         }
-
         return false;
     }
 
@@ -170,7 +174,6 @@ public class CameraAPI {
             Log.v(CameraAPI.TAG, "IO:" + e.getMessage());
             return e.getMessage();
         } finally {
-            urlConnection.disconnect();
             try {
                 outputStream.close();
             } catch (IOException e) {
@@ -181,6 +184,73 @@ public class CameraAPI {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            urlConnection.disconnect();
+        }
+        return null;
+    }
+
+    protected String postImage( String data ) {
+
+        String userPassword = this.getUser() + ":" + this.getPass();
+        String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT));
+
+        // chicos, este resource me viene como int, no veo como hacerlo string
+        //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
+        URL url = null;
+        try {
+            url = new URL("http://cameramap.escalared.com/wp-json/media");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        try {
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+            urlConnection.connect();
+
+            // Execute HTTP Post Request
+            Log.d(CameraAPI.TAG, "request:" + url.toString());
+            Log.d(CameraAPI.TAG, "request_method:" + urlConnection.getRequestMethod());
+            Log.d(CameraAPI.TAG, "response_status:" + urlConnection.getResponseCode());
+            Log.d(CameraAPI.TAG, "response_message:" + urlConnection.getResponseMessage());
+
+            outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
+            outputStream.write(data.getBytes());
+            outputStream.flush();
+
+            if (urlConnection.getResponseCode() == 201) {
+                inputStream = urlConnection.getInputStream();
+                String result = convertStreamToString(inputStream);
+                Log.d(CameraAPI.TAG, "response:" + result);
+                return result;
+            }
+        } catch (IOException e) {
+            Log.v(CameraAPI.TAG, "IO:" + e.getMessage());
+            return e.getMessage();
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            urlConnection.disconnect();
         }
         return null;
     }
@@ -204,5 +274,4 @@ public class CameraAPI {
         }
         return stringBuilder.toString();
     }
-
 }

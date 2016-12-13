@@ -23,6 +23,9 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 //import android.util.Log;
 
 public class Form extends Activity {
@@ -36,6 +39,7 @@ public class Form extends Activity {
 	private Button bCameraAR;
 	private Button bUpload;
 	private static final String TAG = "FormActivity";
+	String comentario, address;
 
 	/**
 	 * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -73,7 +77,7 @@ public class Form extends Activity {
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
 				// Devuele la opcion que hayamos seleccionado
-				tipo = (int) arg0.getSelectedItemPosition();
+				tipo = arg0.getSelectedItemPosition();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -88,7 +92,7 @@ public class Form extends Activity {
 		sVigilancia.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				vigilancia = (int) arg0.getSelectedItemPosition();
+				vigilancia = arg0.getSelectedItemPosition();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -103,7 +107,7 @@ public class Form extends Activity {
 		sEstado.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				estado = (int) arg0.getSelectedItemPosition();
+				estado = arg0.getSelectedItemPosition();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -134,8 +138,8 @@ public class Form extends Activity {
 				if (eLocation.getText().toString().length() > 0) {
 					Intent map = new Intent(Form.this, CameraMap.class);
 					Bundle b = new Bundle();
-					String address = eLocation.getText().toString();
-					String comentario = eComen.getText().toString();
+					address = eLocation.getText().toString();
+					comentario = eComen.getText().toString();
 					b.putString("add", address);
 					b.putString("comen", comentario);
 					b.putInt("tipo", tipo);
@@ -175,7 +179,7 @@ public class Form extends Activity {
 		bUpload.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				final HttpResultCredentials http = new HttpResultCredentials(Form.this);
-				http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload");
+				final AsyncTask<String, String, Void> upload = http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload", getFromJSON());
 				final Handler mHandler = new Handler();
 				final Runnable mUpdateResults = new Runnable() {
 					public void run() {
@@ -201,6 +205,18 @@ public class Form extends Activity {
 		});
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
 		client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+	}
+
+	private String getFromJSON () {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("title", "Camera " + address);
+			json.put("content_raw", "tipo: " + tipo + "\n" + "vigilancia: " + vigilancia + "\n" + "estado: " + estado + "\n" + "comentarios: " + comentario + "\n");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		Log.d(Form.TAG, "JSON: " + json.toString());
+		return json.toString();
 	}
 
 	@Override

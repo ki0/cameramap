@@ -16,7 +16,6 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
     private Context context;
     private Boolean HttpStatus = false;
     protected Activity activity;
-    public final CameraAPI api = CameraAPI.getInstance();
 
     public Boolean getHttpResult(){ return this.HttpStatus; }
     private void setHttpResult(Boolean status){ this.HttpStatus = status; }
@@ -32,17 +31,18 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
         // Por debajo del ProgressBar hacemos el logeo
         Log.d(HttpResultCredentials.TAG, "login: " + params[0] + "// pass: " + params[1] + "// process: " + params[2]);
 
-        api.setUser(params[0]);
-        api.setPass(params[1]);
+        CameraAPI.getInstance().setUser(params[0]);
+        CameraAPI.getInstance().setPass(params[1]);
         switch (params[2]){
             case "login":
-                if ( api.checkLogin() ) {
-                    api.setStatusLogin(true);
-                } else api.setStatusLogin(false);
-                Log.d(HttpResultCredentials.TAG, "TODO OK  " + api.getStatusLogin());
+                if (CameraAPI.getInstance().checkLogin() ) {
+                    CameraAPI.getInstance().setStatusLogin(true);
+                } else CameraAPI.getInstance().setStatusLogin(false);
+                Log.d(HttpResultCredentials.TAG, "TODO OK  " + CameraAPI.getInstance().getStatusLogin());
                 break;
             case "upload":
-                api.postUpload(params[3]);
+                CameraAPI.getInstance().postImage(params[3]);
+                CameraAPI.getInstance().postUpload(params[3]);
                 break;
             default:
         }
@@ -62,9 +62,9 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
         // Una vez hecho lo que queriamos quitamos el ProgressBar
         if (progress.isShowing()) progress.dismiss();
 
-        if ( api.getStatusLogin() ) {
+        if ( CameraAPI.getInstance().getStatusLogin() ) {
 
-            this.setHttpResult(api.getStatusLogin());
+            this.setHttpResult(CameraAPI.getInstance().getStatusLogin());
 
         } else {
             Toast.makeText(context, "login ko, lechon", Toast.LENGTH_SHORT).show();

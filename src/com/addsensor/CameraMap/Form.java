@@ -39,6 +39,7 @@ public class Form extends Activity {
 	private Button bCameraAR;
 	private Button bUpload;
 	private static final String TAG = "FormActivity";
+	EditText eLocation, eComen;
 	String comentario, address;
 
 	/**
@@ -64,8 +65,8 @@ public class Form extends Activity {
 		Spinner sEstado = (Spinner) findViewById(R.id.estado);
 
 		// Inicializacion de los cajas para introducir texto.
-		final EditText eLocation = (EditText) findViewById(R.id.eLocation);
-		final EditText eComen = (EditText) findViewById(R.id.eComen);
+		eLocation = (EditText) findViewById(R.id.eLocation);
+		eComen = (EditText) findViewById(R.id.eComen);
 
 		// Inicializacion del adaptador que mostrara las opciones del spinner, al ser pulsado.
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cMarkers, android.R.layout.simple_spinner_item);
@@ -179,7 +180,7 @@ public class Form extends Activity {
 		bUpload.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				final HttpResultCredentials http = new HttpResultCredentials(Form.this);
-				final AsyncTask<String, String, Void> upload = http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload", getFromJSON());
+				http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload", getFromJSON());
 				final Handler mHandler = new Handler();
 				final Runnable mUpdateResults = new Runnable() {
 					public void run() {
@@ -210,8 +211,8 @@ public class Form extends Activity {
 	private String getFromJSON () {
 		JSONObject json = new JSONObject();
 		try {
-			json.put("title", "Camera " + address);
-			json.put("content_raw", "tipo: " + tipo + "\n" + "vigilancia: " + vigilancia + "\n" + "estado: " + estado + "\n" + "comentarios: " + comentario + "\n");
+			json.put("title", eLocation.getText().toString());
+			json.put("content_raw", "tipo: " + tipo + "\n" + "vigilancia: " + vigilancia + "\n" + "estado: " + estado + "\n" + "comentarios: " + eComen.getText().toString() + "\n");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

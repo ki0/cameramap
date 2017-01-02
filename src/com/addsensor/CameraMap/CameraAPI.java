@@ -4,6 +4,7 @@ package com.addsensor.CameraMap;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -143,47 +145,47 @@ public final class CameraAPI {
             e.printStackTrace();
         }
 
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
+        OutputStream outputStream;
+        InputStream inputStream;
+
+        urlConnection.setDoOutput(true);
+        urlConnection.setChunkedStreamingMode(0);
         try {
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+        urlConnection.setRequestProperty("Accept", "application/json");
+        urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+        try {
             urlConnection.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            // Execute HTTP Post Request
-            Log.d(CameraAPI.TAG, "request:" + url.toString());
-            Log.d(CameraAPI.TAG, "request_method:" + urlConnection.getRequestMethod());
-            Log.d(CameraAPI.TAG, "response_status:" + urlConnection.getResponseCode());
-            Log.d(CameraAPI.TAG, "response_message:" + urlConnection.getResponseMessage());
+        // Execute HTTP Post Request
+        Log.d(CameraAPI.TAG, "data:" + data);
+        Log.d(CameraAPI.TAG, "user:" + this.getUser());
+        Log.d(CameraAPI.TAG, "password:" + this.getPass());
+        Log.d(CameraAPI.TAG, "request:" + url.toString());
 
+        try {
             outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
             outputStream.write(data.getBytes());
-            outputStream.flush();
+            outputStream.close();
 
             if (urlConnection.getResponseCode() == 201) {
-                inputStream = urlConnection.getInputStream();
+                inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 String result = convertStreamToString(inputStream);
                 Log.d(CameraAPI.TAG, "response:" + result);
+                inputStream.close();
                 return result;
             }
         } catch (IOException e) {
             Log.v(CameraAPI.TAG, "IO:" + e.getMessage());
             return e.getMessage();
         } finally {
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             urlConnection.disconnect();
         }
         return null;
@@ -209,47 +211,50 @@ public final class CameraAPI {
             e.printStackTrace();
         }
 
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
+        OutputStream outputStream;
+        InputStream inputStream;
+
+        urlConnection.setDoOutput(true);
+        urlConnection.setChunkedStreamingMode(0);
+
         try {
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+        urlConnection.setRequestProperty("Accept", "application/json");
+        urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+
+        try {
             urlConnection.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            // Execute HTTP Post Request
-            Log.d(CameraAPI.TAG, "request:" + url.toString());
-            Log.d(CameraAPI.TAG, "request_method:" + urlConnection.getRequestMethod());
-            Log.d(CameraAPI.TAG, "response_status:" + urlConnection.getResponseCode());
-            Log.d(CameraAPI.TAG, "response_message:" + urlConnection.getResponseMessage());
+        // Execute HTTP Post Request
+        Log.d(CameraAPI.TAG, "data:" + data);
+        Log.d(CameraAPI.TAG, "user:" + this.getUser());
+        Log.d(CameraAPI.TAG, "password:" + this.getPass());
+        Log.d(CameraAPI.TAG, "request:" + url.toString());
 
+        try {
             outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
             outputStream.write(data.getBytes());
-            outputStream.flush();
+            outputStream.close();
 
             if (urlConnection.getResponseCode() == 201) {
                 inputStream = urlConnection.getInputStream();
                 String result = convertStreamToString(inputStream);
                 Log.d(CameraAPI.TAG, "response:" + result);
+                inputStream.close();
                 return result;
             }
         } catch (IOException e) {
             Log.v(CameraAPI.TAG, "IO:" + e.getMessage());
             return e.getMessage();
         } finally {
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             urlConnection.disconnect();
         }
         return null;

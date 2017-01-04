@@ -193,6 +193,18 @@ public class Form extends Activity {
 							try {
 								sleep(3);
 								if (http.getHttpResult()) {
+									Intent map = new Intent(Form.this, CameraMap.class);
+									Bundle b = new Bundle();
+									address = eLocation.getText().toString();
+									comentario = eComen.getText().toString();
+									b.putString("add", address);
+									b.putString("comen", comentario);
+									b.putInt("tipo", tipo);
+									b.putInt("vigila", vigilancia);
+									b.putInt("estado", estado);
+									map.putExtras(b);
+									setResult(0, map);
+									finish();
 								}
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
@@ -241,7 +253,7 @@ public class Form extends Activity {
 	}
 
 	public String getPath(Uri uri) {
-		String[] projection = {Media.DATA};
+		String[] projection = {MediaStore.Images.Media.DATA};
 		Cursor cursor = managedQuery(uri, projection, null, null, null);
 		if (cursor != null) {
 			int column_index = cursor.getColumnIndexOrThrow(Media.DATA);

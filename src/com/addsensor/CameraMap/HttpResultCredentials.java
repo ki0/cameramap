@@ -41,7 +41,6 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
                 Log.d(HttpResultCredentials.TAG, "TODO OK  " + CameraAPI.getInstance().getStatusLogin());
                 break;
             case "upload":
-                //CameraAPI.getInstance().postImage(params[3]);
                 CameraAPI.getInstance().postUpload(params[3]);
                 break;
             default:

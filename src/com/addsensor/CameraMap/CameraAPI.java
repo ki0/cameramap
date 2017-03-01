@@ -63,7 +63,7 @@ public final class CameraAPI {
         if ( res != null) {
             try {
                 JSONObject lStatus = new JSONObject( res );
-                String username  = lStatus.getString("username");
+                String username  = lStatus.getString("slug");
                 Log.d(CameraAPI.TAG, "Stop progress bar");
                 if ( this.getUser().equals(username) ) {
                     return true;
@@ -85,7 +85,7 @@ public final class CameraAPI {
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/users/me");
+            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/users/me");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -125,7 +125,7 @@ public final class CameraAPI {
         return null;
     }
 
-    protected String postUpload( String data ) {
+    protected String postUpload( String data, String imagePath ) {
 
         String userPassword = this.getUser() + ":" + this.getPass();
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.DEFAULT));
@@ -134,7 +134,7 @@ public final class CameraAPI {
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/posts");
+            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/posts");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -180,6 +180,12 @@ public final class CameraAPI {
                 String result = convertStreamToString(inputStream);
                 Log.d(CameraAPI.TAG, "response:" + result);
                 inputStream.close();
+                try {
+                    JSONObject lStatus = new JSONObject( result );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String postID  = lStatus.getString("id");
                 return result;
             }
         } catch (IOException e) {

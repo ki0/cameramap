@@ -150,6 +150,7 @@ public class Form extends Activity {
 					comentario = eComen.getText().toString();
 					b.putString("add", address);
 					b.putString("comen", comentario);
+					b.putString("image", selectedImgPath);
 					b.putInt("tipo", tipo);
 					b.putInt("vigila", vigilancia);
 					b.putInt("estado", estado);
@@ -186,8 +187,12 @@ public class Form extends Activity {
 		// del formulario.
 		bUpload.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
+				if (selectedImgPath == null) {
+					Toast.makeText(Form.this, "*** ERROR: NO IMAGE SELECTED ***", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				final HttpResultCredentials http = new HttpResultCredentials(Form.this);
-				http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload", getFromJSON());
+				http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "upload", getFromJSON(), selectedImgPath);
 				final Handler mHandler = new Handler();
 				final Runnable mUpdateResults = new Runnable() {
 					public void run() {

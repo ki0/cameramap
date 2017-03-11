@@ -218,8 +218,6 @@ public final class CameraAPI {
         HttpURLConnection urlConnection = null;
 
         String lineEnd = "\r\n";
-        String twoHyphens = "--";
-        String boundary =  "*****";
         int bytesRead = 0, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1*1024*1024;
@@ -274,7 +272,6 @@ public final class CameraAPI {
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
             }
-
 
             // Execute HTTP Post Request
             Log.d(CameraAPI.TAG, "ResposeCode:" + urlConnection.getResponseCode());

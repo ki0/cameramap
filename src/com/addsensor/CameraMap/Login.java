@@ -29,8 +29,7 @@ public class Login extends Activity {
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox);
         final Button bLogin = (Button) findViewById(R.id.loginButton);
         final CameraAdapterDB db = new CameraAdapterDB(this);
-
-
+        final HttpResultCredentials[] http = new HttpResultCredentials[1];
 
         login.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -71,8 +70,8 @@ public class Login extends Activity {
         bLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                final HttpResultCredentials http = new HttpResultCredentials(Login.this);
-                http.execute(login.getText().toString(), pass.getText().toString(), "login");
+                http[0] = new HttpResultCredentials(Login.this);
+                http[0].execute(login.getText().toString(), pass.getText().toString(), "login");
                 final Handler mHandler = new Handler();
                 final Runnable mUpdateResults = new Runnable() {
                     public void run() {
@@ -82,16 +81,14 @@ public class Login extends Activity {
                 // Este thread espera hasta que el login ok, entonces guardamos en la bd.
                 new Thread() {
                     public void run() {
-                        while (!http.getStatus().equals(AsyncTask.Status.FINISHED)) {
+                        while (!http[0].getStatus().equals(AsyncTask.Status.FINISHED)) {
                             try {
                                 sleep(3);
-                                if (http.getHttpResult()) {
+                                if (http[0].getHttpResult()) {
 
                                     Intent startCameraMap = new Intent(Login.this, CameraMap.class);
                                     startActivity(startCameraMap);
                                     finish();
-                                } else {
-                                    Toast.makeText(Login.this, "*** ERROR: Something went wrong ***", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (InterruptedException e) {
                                 // TODO Auto-generated catch block
@@ -106,16 +103,21 @@ public class Login extends Activity {
             // Cuando tengamos el resultado del login miramos si lo introducimos en la BD
             private void updateResultsInUi() {
                 // TODO Auto-generated method stub
-                db.open();
+                if (http[0].getHttpResult()){
+                    db.open();
 
-                if (checkBox.isChecked()) {
-                    Log.d(Login.TAG, "Checkbox activado");
+                    if (checkBox.isChecked()) {
+                        Log.d(Login.TAG, "Checkbox activado");
                         if (!db.loginExists(login.getText().toString())) {
-                        Log.d(Login.TAG, "Insertamos en la BD: " + login.getText().toString() + "// pass: " + pass.getText().toString());
-                        db.insert(login.getText().toString(), pass.getText().toString());
+                            Log.d(Login.TAG, "Insertamos en la BD: " + login.getText().toString() + "// pass: " + pass.getText().toString());
+                            db.insert(login.getText().toString(), pass.getText().toString());
+                        }
                     }
+                    db.close();
+                } else {
+                    Toast.makeText(Login.this, "*** ERROR: Something went wrong ***", Toast.LENGTH_SHORT).show();
                 }
-                db.close();
+
             }
         });
     }

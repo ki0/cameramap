@@ -256,9 +256,6 @@ public final class CameraAPI {
             urlConnection.setRequestProperty("Content-Disposition", "attachment;filename=\"" + sourceFile.getName() + "\";post=" + id + ";title=\"" + title + "\"" + lineEnd);
 
             DataOutputStream dos = new DataOutputStream(urlConnection.getOutputStream());
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
-            dos.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();
             bufferSize = Math.min(bytesAvailable, maxBufferSize);
@@ -278,8 +275,6 @@ public final class CameraAPI {
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
             }
 
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes(lineEnd);
 
             // Execute HTTP Post Request
             Log.d(CameraAPI.TAG, "ResposeCode:" + urlConnection.getResponseCode());

@@ -107,7 +107,7 @@ public class Login extends Activity {
 
                 if (checkBox.isChecked()) {
                     Log.d(Login.TAG, "Checkbox activado");
-                    if (!db.loginExists(login.getText().toString())) {
+                        if (!db.loginExists(login.getText().toString())) {
                         Log.d(Login.TAG, "Insertamos en la BD: " + login.getText().toString() + "// pass: " + pass.getText().toString());
                         db.insert(login.getText().toString(), pass.getText().toString());
                     }

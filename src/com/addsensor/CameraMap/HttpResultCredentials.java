@@ -36,12 +36,14 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
         switch (params[2]){
             case "login":
                 if (CameraAPI.getInstance().checkLogin() ) {
-                    CameraAPI.getInstance().setStatusLogin(true);
-                } else CameraAPI.getInstance().setStatusLogin(false);
+                    this.setHttpResult(true);
+                } else this.setHttpResult(false);
                 Log.d(HttpResultCredentials.TAG, "TODO OK  " + CameraAPI.getInstance().getStatusLogin());
                 break;
             case "upload":
-                CameraAPI.getInstance().postUpload(params[3], params[4]);
+                if ( CameraAPI.getInstance().postUpload(params[3], params[4]) ) {
+                   this.setHttpResult(true);
+                } else this.setHttpResult(false);
                 break;
             default:
         }
@@ -61,12 +63,12 @@ public class HttpResultCredentials extends AsyncTask<String, String, Void> {
         // Una vez hecho lo que queriamos quitamos el ProgressBar
         if (progress.isShowing()) progress.dismiss();
 
-        if ( CameraAPI.getInstance().getStatusLogin() ) {
+        if ( this.getHttpResult() ) {
 
             this.setHttpResult(CameraAPI.getInstance().getStatusLogin());
 
         } else {
-            Toast.makeText(context, "login ko, lechon", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "ERROR: something went wrong!!", Toast.LENGTH_SHORT).show();
         }
     }
 }

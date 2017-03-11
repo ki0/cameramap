@@ -105,6 +105,7 @@ public final class CameraAPI {
         try {
             urlConnection.setDoOutput(false);
             urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(10000);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
@@ -126,7 +127,9 @@ public final class CameraAPI {
             Log.v( CameraAPI.TAG, "IO:" + e.getMessage() );
             return e.getMessage();
         } finally {
-            urlConnection.disconnect();
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
         return null;
     }

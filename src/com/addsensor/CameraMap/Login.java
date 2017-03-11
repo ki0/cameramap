@@ -13,6 +13,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Login extends Activity {
 
@@ -89,6 +90,8 @@ public class Login extends Activity {
                                     Intent startCameraMap = new Intent(Login.this, CameraMap.class);
                                     startActivity(startCameraMap);
                                     finish();
+                                } else {
+                                    Toast.makeText(Login.this, "*** ERROR: Something went wrong ***", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (InterruptedException e) {
                                 // TODO Auto-generated catch block

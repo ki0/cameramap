@@ -137,7 +137,6 @@ public final class CameraAPI {
     protected Boolean postUpload( String data, String imagePath ) {
 
         String postID = null;
-        String title = null;
         String userPassword = this.getUser() + ":" + this.getPass();
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));
 
@@ -194,12 +193,10 @@ public final class CameraAPI {
                 try {
                     JSONObject lStatus = new JSONObject( result );
                     postID  = lStatus.getString("id");
-                    JSONObject getSth = lStatus.getJSONObject("title");
-                    title = (String) getSth.get("rendered");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if ( postMedia( encoding, postID, title, imagePath) ){
+                if ( postMedia( encoding, postID, imagePath) ){
                     return true;
                 }
             }
@@ -214,7 +211,7 @@ public final class CameraAPI {
         return false;
     }
 
-    private boolean postMedia( String encoding, String id, String title, String imagePath) {
+    private boolean postMedia( String encoding, String id, String imagePath) {
         HttpURLConnection urlConnection = null;
 
         String lineEnd = "\r\n";
@@ -222,12 +219,11 @@ public final class CameraAPI {
         byte[] buffer;
         int maxBufferSize = 1*1024*1024;
 
-        if ((id == null) || (title == null) || (imagePath == null)){
+        if ((id == null) || (imagePath == null)){
             return false;
         }
 
         Log.d(CameraAPI.TAG, "PostID:" + id.toString());
-        Log.d(CameraAPI.TAG, "Title:" + title.toString());
         Log.d(CameraAPI.TAG, "Image Path:" + imagePath.toString());
 
         File sourceFile = new File(imagePath);
@@ -239,7 +235,7 @@ public final class CameraAPI {
         try {
             FileInputStream fileInputStream = new FileInputStream( sourceFile );
 
-            URL url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/media");
+            URL url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/media?post=" + id + "");
 
             urlConnection = (HttpURLConnection) url.openConnection();
 
@@ -251,7 +247,7 @@ public final class CameraAPI {
             urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
             urlConnection.setRequestProperty("Connection", "Keep-Alive");
             urlConnection.setRequestProperty("Content-Type", this.getMimeType(imagePath));
-            urlConnection.setRequestProperty("Content-Disposition", "attachment;filename=\"" + sourceFile.getName() + "\";post=" + id + ";title=\"" + title + "\"" + lineEnd);
+            urlConnection.setRequestProperty("Content-Disposition", "attachment;filename=\"" + sourceFile.getName() + "\"" + lineEnd);
 
             DataOutputStream dos = new DataOutputStream(urlConnection.getOutputStream());
 

@@ -40,8 +40,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	private LocationRequest mLocationRequest;
 	private GoogleApiClient mGoogleApiClient;
 	private static final String TAG = "CameraMapAct";
-	static final private int STREET = Menu.FIRST;
-	static final private int SAT = Menu.FIRST + 1;
 	static final private int UPLOAD = Menu.FIRST + 2;
 	static final private int QUIT1 = Menu.FIRST + 3;
 	static final private int GET_CODE = 0;
@@ -69,15 +67,10 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		// Creamos y anadimos los nuevos menus
 		MenuItem mQuit1 = menu.add(0, QUIT1, Menu.NONE, R.string.mQuit);
 		MenuItem mUpload = menu.add(0, UPLOAD, Menu.NONE, R.string.mUpload);
-		MenuItem mStreet = menu.add(0, STREET, Menu.NONE, R.string.mStreet);
-		MenuItem mSat = menu.add(0, SAT, Menu.NONE, R.string.mSat);
-
 
 		// Anadimos shortcuts
 		mQuit1.setShortcut('7', 'q');
 		mUpload.setShortcut('8', 'u');
-		mStreet.setShortcut('6', 'w');
-		mSat.setShortcut('9', 'y');
 
 		return true;
 	}
@@ -89,12 +82,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		// Segun la opcion seleccionada pues haremos una funcion u otra.
 		switch (iMenu.getItemId()) {
-			case (STREET):
-				map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-				return true;
-			case (SAT):
-				map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-				return true;
 			case (UPLOAD):
 				if (d == null) {
 					iMenu.setIntent(new Intent(this, Form.class));

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -233,10 +234,14 @@ public class Form extends Activity {
 	}
 
 	private String getFromJSON () {
+		Resources res = getResources();
+		String[] aTypes = res.getStringArray(R.array.cMarkers);
+		String[] aVig = res.getStringArray(R.array.cVigilancia);
+		String[] aState = res.getStringArray(R.array.cEstado);
 		JSONObject json = new JSONObject();
 		try {
 			json.put("title", eLocation.getText().toString());
-			json.put("content_raw", "tipo: " + tipo + "\n" + "vigilancia: " + vigilancia + "\n" + "estado: " + estado + "\n" + "comentarios: " + eComen.getText().toString() + "\n");
+			json.put("content", "Type of camera: " + aTypes[tipo] + "\n" + "Alert of vigilance: " + aVig[vigilancia] + "\n" + "Private/Public: " + aState[estado] + "\n" + "Comments: " + eComen.getText().toString() + "\n");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

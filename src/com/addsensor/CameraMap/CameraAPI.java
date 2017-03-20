@@ -214,6 +214,7 @@ public final class CameraAPI {
     private boolean postMedia( String encoding, String id, String imagePath) {
         HttpURLConnection urlConnection = null;
 
+        String featured_media_ID = null;
         String lineEnd = "\r\n";
         int bytesRead = 0, bytesAvailable, bufferSize;
         byte[] buffer;
@@ -284,13 +285,92 @@ public final class CameraAPI {
                 String result = convertStreamToString(bis);
                 Log.d(CameraAPI.TAG, "DataInputStream:" + result);
                 bis.close();
-                return true;
+                JSONObject json_update = new JSONObject();
+                try {
+                    JSONObject lStatus = new JSONObject( result );
+                    featured_media_ID  = lStatus.getString("id");
+                    json_update.put("featured_media", featured_media_ID);
+                    json_update.put("status", "publish");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if ( postUpdate(id, json_update.toString())) {
+                    return true;
+                }
             }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            return Boolean.valueOf(e.getMessage());
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return false;
+    }
+
+    protected Boolean postUpdate( String id, String data ) {
+
+        String userPassword = this.getUser() + ":" + this.getPass();
+        String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));
+
+        // chicos, este resource me viene como int, no veo como hacerlo string
+        //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
+        URL url = null;
+        try {
+            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/posts/" + id + "");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        OutputStream outputStream;
+        InputStream inputStream;
+
+        urlConnection.setDoOutput(true);
+        urlConnection.setChunkedStreamingMode(0);
+        try {
+            urlConnection.setRequestMethod("POST");
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+        urlConnection.setRequestProperty("Accept", "application/json");
+        urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+        try {
+            urlConnection.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Execute HTTP Post Request
+        Log.d(CameraAPI.TAG, "data:" + data);
+        Log.d(CameraAPI.TAG, "user:" + this.getUser());
+        Log.d(CameraAPI.TAG, "password:" + this.getPass());
+        Log.d(CameraAPI.TAG, "request:" + url.toString());
+
+        try {
+            outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
+            outputStream.write(data.getBytes());
+            outputStream.close();
+
+            if (urlConnection.getResponseCode() == 200) {
+                inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                String result = convertStreamToString(inputStream);
+                Log.d(CameraAPI.TAG, "response:" + result);
+                inputStream.close();
+                return true;
+            }
+        } catch (IOException e) {
+            Log.v(CameraAPI.TAG, "IO:" + e.getMessage());
             return Boolean.valueOf(e.getMessage());
         } finally {
             if (urlConnection != null) {

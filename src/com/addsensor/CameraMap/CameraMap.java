@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -119,21 +120,21 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	}
 
 	// Función obtiene la latitud y longuitud de un string pasado como parametro.
-	public void getLocationByAddress(String address) {
+	public Location getLocationByAddress(String address) {
 
 		Geocoder gc = new Geocoder(this, Locale.getDefault());
-
 		List<Address> addresses;
+		Location location = new Location("");
 		try {
 			addresses = gc.getFromLocationName(address, 5);
 			Address x = addresses.get(0);
-			Location location = new Location("");
 			location.setLatitude(x.getLatitude());
 			location.setLongitude(x.getLongitude());
 			handleNewLocation(location);
 		} catch (IOException e) {
 			Log.d(CameraMap.TAG, "ERROR NO LOCATIONS");
 		}
+		return location;
 	}
 
 	// Funcion que inicializa los parametros necesarios en el momento de la creaci�n de la activity 
@@ -170,7 +171,11 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		// en caso contrario, actualizaremos el mapa con la direcci�n.
 		if (resultCode == 0) {
 			d = data.getExtras();
-			getLocationByAddress(d.getString("add").toString());
+			Location location = getLocationByAddress(d.getString("add").toString());
+			if ( location == null ){
+				Toast.makeText(CameraMap.this, "*** ERROR: Address doesn't exit ***", Toast.LENGTH_SHORT).show();
+				return;
+			}
 		} else {
 			d = null;
 		}

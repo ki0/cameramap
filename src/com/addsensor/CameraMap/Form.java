@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -32,7 +34,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Locale;
 
 //import android.util.Log;
 
@@ -147,8 +152,6 @@ public class Form extends Activity {
 				if (eLocation.getText().toString().length() > 0) {
 					Intent map = new Intent(Form.this, CameraMap.class);
 					Bundle b = new Bundle();
-					address = eLocation.getText().toString();
-					comentario = eComen.getText().toString();
 					b.putString("add", address);
 					b.putString("comen", comentario);
 					b.putString("image", selectedImgPath);
@@ -188,8 +191,14 @@ public class Form extends Activity {
 		// del formulario.
 		bUpload.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
+				address = eLocation.getText().toString();
+				comentario = eComen.getText().toString();
 				if (selectedImgPath == null) {
 					Toast.makeText(Form.this, "*** ERROR: NO IMAGE SELECTED ***", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if (address.matches("")){
+					Toast.makeText(Form.this, "*** ERROR: NO ADDRESS ***", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				final HttpResultCredentials http = new HttpResultCredentials(Form.this);
@@ -238,15 +247,29 @@ public class Form extends Activity {
 		String[] aTypes = res.getStringArray(R.array.cMarkers);
 		String[] aVig = res.getStringArray(R.array.cVigilancia);
 		String[] aState = res.getStringArray(R.array.cEstado);
+		Address addss = getAddress(address);
 		JSONObject json = new JSONObject();
 		try {
 			json.put("title", eLocation.getText().toString());
-			json.put("content", "Type of camera: " + aTypes[tipo] + "\n" + "Alert of vigilance: " + aVig[vigilancia] + "\n" + "Private/Public: " + aState[estado] + "\n" + "Comments: " + eComen.getText().toString() + "\n");
+			json.put("content", "[geo_mashup_map map_content=\"single\"]" + "\n" + "[geo_mashup_save_location lat=\"" + addss.getLatitude() + "\"" + " lng=\"" + addss.getLongitude() + "\"" + "]" + "\n" + "Type of camera: " + aTypes[tipo] + "\n" + "Alert of vigilance: " + aVig[vigilancia] + "\n" + "Private/Public: " + aState[estado] + "\n" + "Comments: " + eComen.getText().toString() + "\n");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		Log.d(Form.TAG, "JSON: " + json.toString());
 		return json.toString();
+	}
+
+	private Address getAddress(String address) {
+		Geocoder gc = new Geocoder(this, Locale.getDefault());
+		List<Address> addresses;
+		Address x = null;
+		try {
+			addresses = gc.getFromLocationName(address, 5);
+			x = addresses.get(0);
+		} catch (IOException e) {
+			Log.d(Form.TAG, "ERROR NO LOCATIONS");
+		}
+		return x;
 	}
 
 	@Override

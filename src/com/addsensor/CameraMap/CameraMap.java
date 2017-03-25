@@ -1,11 +1,13 @@
 package com.addsensor.CameraMap;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -146,7 +148,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		setContentView(R.layout.cmap);
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mv);
 		mapFragment.getMapAsync(this);
-		map = mapFragment.getMap();
 		// Create the LocationRequest object
 		mLocationRequest = LocationRequest.create()
 				.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -164,25 +165,38 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		super.onActivityResult(requestCode, resultCode, data);
-		d = data.getExtras();
-		Log.d(CameraMap.TAG, "Bundle Login" + d);
-
 		// Si no hemos devuelto una direccion (address) nos mostrar� nuestra posici�n actual,
 		// en caso contrario, actualizaremos el mapa con la direcci�n.
-		if (resultCode == 0) {
+		if ( data != null ){
 			d = data.getExtras();
-			Location location = getLocationByAddress(d.getString("add").toString());
-			if ( location == null ){
-				Toast.makeText(CameraMap.this, "*** ERROR: Address doesn't exit ***", Toast.LENGTH_SHORT).show();
-				return;
+			Log.d(CameraMap.TAG, "Bundle Login" + d);
+			if (resultCode == 0) {
+				d = data.getExtras();
+				Location location = getLocationByAddress(d.getString("add").toString());
+				if (location == null) {
+					Toast.makeText(CameraMap.this, "*** ERROR: Address doesn't exit ***", Toast.LENGTH_SHORT).show();
+					return;
+				}
+			} else {
+				d = null;
 			}
-		} else {
-			d = null;
 		}
 	}
 
 	@Override
-	public void onMapReady(GoogleMap map) {
+	public void onMapReady(GoogleMap googleMap) {
+		Log.d(CameraMap.TAG, "Google Map is READY");
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			// TODO: Consider calling
+			//    ActivityCompat#requestPermissions
+			// here to request the missing permissions, and then overriding
+			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+			//                                          int[] grantResults)
+			// to handle the case where the user grants the permission. See the documentation
+			// for ActivityCompat#requestPermissions for more details.
+			return;
+		}
+		map = googleMap;
 		map.setMyLocationEnabled(true);
 	}
 
@@ -202,6 +216,16 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	@Override
 	public void onConnected(Bundle bundle) {
 		Log.d(CameraMap.TAG, "ONCONNECTED");
+		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			// TODO: Consider calling
+			//    ActivityCompat#requestPermissions
+			// here to request the missing permissions, and then overriding
+			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+			//                                          int[] grantResults)
+			// to handle the case where the user grants the permission. See the documentation
+			// for ActivityCompat#requestPermissions for more details.
+			return;
+		}
 		Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 		Log.d(CameraMap.TAG, "Location: " + location);
 		if (location == null) {

@@ -48,8 +48,6 @@ public class Form extends Activity {
 	private Uri currImgUri;
 	private String selectedImgPath;
 	private Button bExplorer;
-	private Button bVmap;
-	private Button bCameraAR;
 	private Button bUpload;
 	private static final String TAG = "FormActivity";
 	EditText eLocation, eComen;
@@ -68,8 +66,6 @@ public class Form extends Activity {
 
 		// Inicializacion de los botones.
 		bExplorer = (Button) this.findViewById(R.id.explorar);
-		bVmap = (Button) this.findViewById(R.id.vMap);
-		bCameraAR = (Button) this.findViewById(R.id.camera);
 		bUpload = (Button) this.findViewById(R.id.upload);
 
 		// Inicializaci�n de los spinners.
@@ -142,33 +138,6 @@ public class Form extends Activity {
 			sEstado.setSelection(extras.getInt("estado"));
 		}
 
-		// Funci�n que cuando se pulsa el boton, establece el resultado del formulario para pasarselo al mapActivity. En caso,
-		// de que hayamos introducido una direcci�n pues estableceremos los campos del bundle para ser 
-		// pasados a la mapActivity, en caso contrario, el resultado es 1, y el mapActivity mostrara
-		// nuestra posicion actual.
-		bVmap.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View arg0) {
-
-				if (eLocation.getText().toString().length() > 0) {
-					Intent map = new Intent(Form.this, CameraMap.class);
-					Bundle b = new Bundle();
-					b.putString("add", address);
-					b.putString("comen", comentario);
-					b.putString("image", selectedImgPath);
-					b.putInt("tipo", tipo);
-					b.putInt("vigila", vigilancia);
-					b.putInt("estado", estado);
-					map.putExtras(b);
-					setResult(0, map);
-					finish();
-				} else {
-					Intent map = new Intent(Form.this, CameraMap.class);
-					setResult(1, map);
-					finish();
-				}
-			}
-		});
-
 		// Función que establece un listener en el botón para que cuando hagamos un click haga una llamada
 		// a la galería de Android.
 		bExplorer.setOnClickListener(new View.OnClickListener() {
@@ -176,14 +145,6 @@ public class Form extends Activity {
 				Intent aCameraGallery = new Intent(Intent.ACTION_GET_CONTENT, Form.this.targetResource);
 				aCameraGallery.setType("image/*");
 				startActivityForResult(Intent.createChooser(aCameraGallery, "Camera Map: Select Picture"), GET_CODE);
-			}
-		});
-
-		// Funcion que arranca la activity de la galeria cuando pulsamos el boton correspondiente.
-		bCameraAR.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View arg0) {
-				Intent aCameraAR = new Intent(Form.this, CameraAR.class);
-				startActivityForResult(aCameraAR, GET_CODE);
 			}
 		});
 

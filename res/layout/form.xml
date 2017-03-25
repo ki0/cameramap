@@ -4,152 +4,128 @@
   android:orientation="vertical"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
-	<Button
-		android:id="@+id/explorar"
-		android:layout_width="160sp"
-		android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-		android:textSize="12sp"
-		android:text="@string/form_button_search"
-	    />
-	<Button
-		android:id="@+id/camera"
-		android:layout_width="160sp"
-		android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-		android:textSize="12sp"
-		android:text="@string/form_button_camera"
-	    />
+
 	<TextView
-        android:id="@+id/text_type_camera"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text_alertvigilancia"
-        android:layout_marginBottom="40sp"
+        android:layout_toStartOf="@+id/tipo"
+        android:layout_marginBottom="70sp"
         android:paddingStart="20sp"
 		android:textSize="12sp"
         android:text="@string/form_text_typocamara"
-        />
+		android:id="@+id/textView" />
 	<Spinner 
         android:id="@+id/tipo"
-        android:layout_width="wrap_content"
+        android:layout_width="160dip"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+		android:textSize="12sp"
         android:drawSelectorOnTop="true"
         android:prompt="@string/cameraType"
-        android:layout_toRightOf="@+id/text_type_camera"
-        android:layout_alignBaseline="@+id/text_type_camera"
-        android:layout_above="@+id/aviso"
-    />
+		android:layout_alignTop="@+id/textView"
+		android:layout_alignParentEnd="true" />
     <TextView
         android:id="@+id/text_alertvigilancia"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text_privatepublic"
-        android:layout_marginBottom="40sp"
+        android:layout_toStartOf="@+id/aviso"
+        android:layout_marginBottom="70sp"
         android:paddingStart="20sp"
 		android:textSize="12sp"
         android:text="@string/form_text_alert"
-    />  
+        />
     <Spinner 
         android:id="@+id/aviso"
-        android:layout_width="wrap_content"
+        android:layout_width="160dip"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/text_alertvigilancia"
-        android:layout_alignBaseline="@+id/text_alertvigilancia"
-        android:layout_above="@+id/estado"
 		android:textSize="12sp"
         android:drawSelectorOnTop="true"
         android:prompt="@string/cameraAlert"
-    />
+		android:layout_below="@+id/textView"
+		android:layout_alignParentEnd="true" />
     <TextView
         android:id="@+id/text_privatepublic"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text_location"
-        android:layout_marginBottom="40sp"
+        android:layout_toStartOf="@+id/estado"
+        android:layout_marginBottom="60sp"
         android:paddingStart="20sp"
 		android:textSize="12sp"
         android:text="@string/form_text_privatepublic"
-    />
-    <Spinner
+        />
+    <Spinner 
         android:id="@+id/estado"
-        android:layout_width="wrap_content"
+        android:layout_width="160dip"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/text_privatepublic"
-        android:layout_alignBaseline="@+id/text_privatepublic"
-        android:layout_above="@+id/eLocation"
-        android:textSize="12sp"
+		android:textSize="12sp"
         android:drawSelectorOnTop="true"
         android:prompt="@string/cameraState"
-    />
+		android:layout_below="@+id/text_alertvigilancia"
+		android:layout_alignParentEnd="true" />
   	<TextView
         android:id="@+id/text_location"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/text_comments"
-        android:layout_toStartOf="@+id/eLocation"
-        android:layout_marginBottom="40sp"
-        android:paddingStart="20sp"
+		android:paddingStart="20sp"
 		android:textSize="12sp"
         android:text="@string/form_text_location"
-        android:paddingBottom="10sp" />
+		android:layout_alignBaseline="@+id/eLocation"
+		android:layout_alignBottom="@+id/eLocation"
+		android:layout_alignParentStart="true"
+		android:layout_toStartOf="@+id/eLocation" />
     <EditText
         android:labelFor="@id/eLocation"
         android:id="@+id/eLocation"
-        android:layout_width="260sp"
+        android:layout_width="260dip"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/eComen"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20sp"
         android:layout_marginEnd="10sp"
 		android:textSize="12sp"
-		android:singleLine="true"
 		android:inputType="textPostalAddress|textLongMessage"
-        android:layout_alignBottom="@+id/text_location"
-        android:layout_alignParentStart="false" />
+		android:maxLines="1" />
   	
 	<TextView
         android:id="@+id/text_comments"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/vMap"
-        android:layout_toStartOf="@+id/eComen"
-        android:layout_marginBottom="20sp"
+		android:layout_marginBottom="43dp"
         android:paddingStart="20sp"
 		android:textSize="12sp"
         android:text="@string/form_text_comments"
-        android:paddingBottom="10sp" />
+		android:layout_above="@+id/explorar"
+		android:layout_alignParentStart="true" />
     <EditText
         android:labelFor="@id/eComen"
         android:id="@+id/eComen"
-        android:layout_width="260sp"
+        android:layout_width="260dip"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/upload"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20sp"
-        android:layout_marginEnd="10sp"
 		android:textSize="12sp"
-		android:inputType="textLongMessage"		
-		android:singleLine="true"
-    />
+		android:inputType="textLongMessage"
+		android:layout_alignBaseline="@+id/text_comments"
+		android:layout_alignBottom="@+id/text_comments"
+		android:layout_alignStart="@+id/eLocation"
+		android:maxLines="1" />
     <Button
 		android:id="@+id/upload"
-		android:layout_width="160sp"
+		android:layout_width="160dip"
 		android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
 		android:textSize="12sp"
 		android:text="@string/form_button_upload"
-	/>
-	<Button
-		android:id="@+id/vMap"
-		android:layout_width="160sp"
-		android:layout_height="wrap_content"
+	    />
+    <Button
+        android:id="@+id/explorar"
+        android:layout_width="160dip"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-		android:textSize="12sp"
-		android:text="@string/form_button_viewmap"
-	/>
+        android:textSize="12sp"
+        android:text="@string/form_button_search"
+        />
 	
 </RelativeLayout>

@@ -25,12 +25,10 @@
     <string name="main_create_account_button">Create Account</string>
     <string name="main_login_button">Login</string>
     <string name="form_button_upload">Upload...</string>
-    <string name="form_button_viewmap">ViewMap</string>
     <string name="form_text_comments">Comments:</string>
     <string name="form_text_location">Location:</string>
     <string name="form_text_privatepublic">Private/Public:</string>
     <string name="form_text_alert">Alert of vigilance:</string>
     <string name="form_text_typocamara">Type of camera:</string>
     <string name="form_button_search">Search...</string>
-    <string name="form_button_camera">Camera...</string>
 </resources>

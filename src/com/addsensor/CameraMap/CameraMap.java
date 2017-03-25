@@ -83,7 +83,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		// Segun la opcion seleccionada pues haremos una funcion u otra.
 		switch (iMenu.getItemId()) {
-			case (UPLOAD):
+			case UPLOAD:
 				if (d == null) {
 					iMenu.setIntent(new Intent(this, Form.class));
 					startActivityForResult(iMenu.getIntent(), GET_CODE);

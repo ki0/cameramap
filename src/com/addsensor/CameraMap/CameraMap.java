@@ -40,6 +40,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 	Bundle d;
 	GoogleMap map;
+	private Location location;
 	private LocationRequest mLocationRequest;
 	private GoogleApiClient mGoogleApiClient;
 	private static final String TAG = "CameraMapAct";
@@ -126,17 +127,17 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		Geocoder gc = new Geocoder(this, Locale.getDefault());
 		List<Address> addresses;
-		Location location = new Location("");
+		Location locationAddress = new Location("");
 		try {
 			addresses = gc.getFromLocationName(address, 5);
 			Address x = addresses.get(0);
-			location.setLatitude(x.getLatitude());
-			location.setLongitude(x.getLongitude());
-			handleNewLocation(location);
+			locationAddress.setLatitude(x.getLatitude());
+			locationAddress.setLongitude(x.getLongitude());
+			handleNewLocation(locationAddress);
 		} catch (IOException e) {
 			Log.d(CameraMap.TAG, "ERROR NO LOCATIONS");
 		}
-		return location;
+		return locationAddress;
 	}
 
 	// Funcion que inicializa los parametros necesarios en el momento de la creaci�n de la activity 
@@ -146,6 +147,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cmap);
+		d = new Bundle();
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mv);
 		mapFragment.getMapAsync(this);
 		// Create the LocationRequest object
@@ -153,7 +155,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 				.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 				.setInterval(10 * 1000)        // 10 seconds, in milliseconds
 				.setFastestInterval(1 * 1000); // 1 second, in milliseconds
-		d = new Bundle();
 		buildGoogleApiClient();
 	}
 
@@ -169,10 +170,12 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		// en caso contrario, actualizaremos el mapa con la direcci�n.
 		if ( data != null ){
 			d = data.getExtras();
-			Log.d(CameraMap.TAG, "Bundle Login" + d);
+			Log.d(CameraMap.TAG, "Bundle Login: " + d);
+			Log.d(CameraMap.TAG, "Result Code: " + requestCode);
 			if (resultCode == 0) {
 				d = data.getExtras();
-				Location location = getLocationByAddress(d.getString("add").toString());
+				Log.d(CameraMap.TAG, "New Location: " + d.get("add").toString());
+				location = getLocationByAddress(d.getString("add").toString());
 				if (location == null) {
 					Toast.makeText(CameraMap.this, "*** ERROR: Address doesn't exit ***", Toast.LENGTH_SHORT).show();
 					return;
@@ -226,19 +229,19 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			// for ActivityCompat#requestPermissions for more details.
 			return;
 		}
-		Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-		Log.d(CameraMap.TAG, "Location: " + location);
-		if (location == null) {
+		if ( d.isEmpty() ){
+			location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+			Log.d(CameraMap.TAG, "Location: " + location);
 			LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 		} else {
 			handleNewLocation(location);
 		}
 	}
 
-	private void handleNewLocation(Location location) {
-		Log.d(CameraMap.TAG, location.toString());
-		double currentLatitude = location.getLatitude();
-		double currentLongitude = location.getLongitude();
+	private void handleNewLocation(Location newLocation) {
+		Log.d(CameraMap.TAG, newLocation.toString());
+		double currentLatitude = newLocation.getLatitude();
+		double currentLongitude = newLocation.getLongitude();
 		LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
 		MarkerOptions hello;
@@ -283,8 +286,8 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {
-		handleNewLocation(location);
+	public void onLocationChanged(Location newLocation) {
+		handleNewLocation(newLocation);
 	}
 
 	@Override

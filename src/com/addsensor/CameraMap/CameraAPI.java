@@ -61,11 +61,7 @@ public final class CameraAPI {
 
         //{"login_status": {"errno": 0, "errstr": "OK"}}
         String res = null;
-        try {
-            res = postLogin( getUser(), getPass() );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        res = postLogin( getUser(), getPass() );
 
         if ( res != null) {
             try {
@@ -84,7 +80,7 @@ public final class CameraAPI {
         return false;
     }
 
-    protected String postLogin(final String login, final String pass) throws IOException {
+    protected String postLogin(final String login, final String pass){
 
         String userPassword = login + ":" + pass;
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));
@@ -127,7 +123,6 @@ public final class CameraAPI {
             }
         } catch (IOException e) {
             Log.v( CameraAPI.TAG, "IO:" + e.getMessage() );
-            return e.getMessage();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -382,7 +377,7 @@ public final class CameraAPI {
         return false;
     }
 
-    protected JSONObject getList(String lat, String lng) throws IOException {
+    protected JSONObject getList(String lat, String lng){
 
         String userPassword = this.getUser() + ":" + this.getPass();
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));

@@ -135,11 +135,11 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			case "Infrarrojos":
 				return 0;
 			case "Domo":
-				return 0;
+				return 1;
 			case "Fina":
-				return 0;
+				return 2;
 			case "Bala":
-				return 0;
+				return 3;
 			default:
 				return 4;
 		}

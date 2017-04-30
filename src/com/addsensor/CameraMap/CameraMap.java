@@ -131,6 +131,21 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		}
 	}
 
+	private Integer selectMarkers (String which){
+		switch (which){
+			case "Infrarrojos":
+				return 0;
+			case "Domo":
+				return 0;
+			case "Fina":
+				return 0;
+			case "Bala":
+				return 0;
+			default:
+				return 4;
+		}
+	}
+
 	// Función obtiene la latitud y longuitud de un string pasado como parametro.
 	public Location getLocationByAddress(String address) {
 
@@ -309,10 +324,12 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 				String post_content = explrObject.getString("post_content");
 				Pattern pattern = Pattern.compile(".*Type of camera: (.*?)\n");
 				Matcher matcher = pattern.matcher(post_content);
+				Integer which = 4;
 				while (matcher.find()) {
 					Log.d(CameraMap.TAG, "Matcher: " + matcher.group(1));
+					which = selectMarkers(matcher.group(1));
 				}
-				addMarkersToMap(latLng, 1);
+				addMarkersToMap(latLng, which);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

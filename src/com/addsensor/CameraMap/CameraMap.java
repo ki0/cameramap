@@ -6,7 +6,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -32,15 +34,22 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CameraMap extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
+	HttpResultCredentials http;
 	Bundle d;
 	GoogleMap map;
-	private Location location;
+	private Location mCurrentLocation;
 	private LocationRequest mLocationRequest;
 	private GoogleApiClient mGoogleApiClient;
 	private static final String TAG = "CameraMapAct";
@@ -106,7 +115,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	}
 
 	// Función que devuelve un objeto overlay que será el marcador que se mostrará en el mapa, a partir de un entero.
-	public MarkerOptions selectMarkers(int which) {
+	private MarkerOptions selectMarkers(int which) {
 
 		switch (which) {
 			case 0:
@@ -133,7 +142,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			Address x = addresses.get(0);
 			locationAddress.setLatitude(x.getLatitude());
 			locationAddress.setLongitude(x.getLongitude());
-			handleNewLocation(locationAddress);
 		} catch (IOException e) {
 			Log.d(CameraMap.TAG, "ERROR NO LOCATIONS");
 		}
@@ -148,6 +156,8 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.cmap);
 		d = new Bundle();
+		d = null;
+		mCurrentLocation = null;
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mv);
 		mapFragment.getMapAsync(this);
 		// Create the LocationRequest object
@@ -175,15 +185,29 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			if (resultCode == 0) {
 				d = data.getExtras();
 				Log.d(CameraMap.TAG, "New Location: " + d.get("add").toString());
-				location = getLocationByAddress(d.getString("add").toString());
-				if (location == null) {
+				mCurrentLocation = getLocationByAddress(d.getString("add").toString());
+				if (mCurrentLocation == null) {
 					Toast.makeText(CameraMap.this, "*** ERROR: Address doesn't exit ***", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				handleNewLocation(mCurrentLocation);
 			} else {
 				d = null;
 			}
 		}
+	}
+
+	/**
+	 * Creating google api client object
+	 */
+	protected synchronized void buildGoogleApiClient() {
+		Log.d(CameraMap.TAG, "Created Google API Client");
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(LocationServices.API)
+				.addApi(AppIndex.API)
+				.build();
 	}
 
 	@Override
@@ -203,21 +227,8 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		map.setMyLocationEnabled(true);
 	}
 
-	/**
-	 * Creating google api client object
-	 */
-	protected synchronized void buildGoogleApiClient() {
-		Log.d(CameraMap.TAG, "Created Google API Client");
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.addApi(LocationServices.API)
-				.addApi(AppIndex.API)
-				.build();
-	}
-
 	@Override
-	public void onConnected(Bundle bundle) {
+	public void onConnected(Bundle d) {
 		Log.d(CameraMap.TAG, "ONCONNECTED");
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			// TODO: Consider calling
@@ -229,37 +240,88 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			// for ActivityCompat#requestPermissions for more details.
 			return;
 		}
-		if ( d.isEmpty() ){
-			location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-			Log.d(CameraMap.TAG, "Location: " + location);
+		if ( mCurrentLocation == null ){
+			mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+			Log.d(CameraMap.TAG, "Location: " + mCurrentLocation);
 			LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-		} else {
-			handleNewLocation(location);
+			LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+			addMarkerToMap(latLng, 4);
+			getAroundCameras(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 		}
 	}
 
 	private void handleNewLocation(Location newLocation) {
 		Log.d(CameraMap.TAG, newLocation.toString());
-		double currentLatitude = newLocation.getLatitude();
-		double currentLongitude = newLocation.getLongitude();
-		LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-		MarkerOptions hello;
-
+		LatLng latLng = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
+		getAroundCameras(newLocation.getLatitude(), newLocation.getLongitude());
 		// Segun los datos que le hayamos pasado desde el formulario mostramos un marcador u otro.
-		if (!(d.isEmpty())) {
-			hello = this.selectMarkers(d.getInt("tipo"));
-		} else {
-			hello = this.selectMarkers(4);
-		}
+		addMarkerToMap(latLng, d.getInt("tipo"));
+	}
+
+	private void addMarkerToMap(LatLng latLng, Integer selector){
+		Log.d(CameraMap.TAG, "Adding ONE MARKER to Map");
+		MarkerOptions camera;
+		camera = this.selectMarkers(selector);
 		map.clear();
-		map.addMarker(hello.position(latLng));
+		map.addMarker(camera.position(latLng));
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20.0f));
 	}
 
+	private void addMarkersToMap(LatLng latLng, Integer selector){
+		Log.d(CameraMap.TAG, "Adding MARKERS to Map");
+		MarkerOptions camera;
+		camera = this.selectMarkers(selector);
+		map.addMarker(camera.position(latLng));
+	}
+
+	private void getAroundCameras(Double lat, Double lng){
+		http = new HttpResultCredentials(CameraMap.this);
+		http.showDialogSpin = false;
+		http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "list", lat, lng);
+
+		// Este thread espera hasta que el login ok, entonces guardamos en la bd.
+		new Thread() {
+			public void run() {
+				while (!http.getStatus().equals(AsyncTask.Status.FINISHED)){}
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						mUpdateResultsInUI();
+					}
+				});
+			}
+		}.start();
+	}
+
+	private void mUpdateResultsInUI() {
+		try {
+			JSONObject jsonObject = http.getJsonResult();
+			if (jsonObject == null) {
+				Log.d(CameraMap.TAG, "JSON es NULL");
+				return;
+			}
+			JSONArray jsonArray = jsonObject.getJSONArray("posts");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject explrObject = jsonArray.getJSONObject(i);
+				Log.d(CameraMap.TAG, "Post: " + explrObject.toString());
+				Log.d(CameraMap.TAG, "Latitude: " + explrObject.getString("lat").toString() + " Longuitude: " + explrObject.getString("lng").toString());
+				LatLng latLng = new LatLng(Double.parseDouble(explrObject.getString("lat")), Double.parseDouble(explrObject.getString("lng")));
+				String post_content = explrObject.getString("post_content");
+				Pattern pattern = Pattern.compile(".*Type of camera: (.*?)\n");
+				Matcher matcher = pattern.matcher(post_content);
+				while (matcher.find()) {
+					Log.d(CameraMap.TAG, "Matcher: " + matcher.group(1));
+				}
+				addMarkersToMap(latLng, 1);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+		
 	@Override
 	public void onConnectionSuspended(int i) {
-
+		Log.d(CameraMap.TAG, "ONCONNECTIONSUSPENDED");
 	}
 
 	@Override
@@ -279,6 +341,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	@Override
 	protected void onPause() {
 		super.onPause();
+		Log.d(CameraMap.TAG, "ONPAUSE");
 		if (mGoogleApiClient.isConnected()) {
 			LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 			mGoogleApiClient.disconnect();
@@ -287,13 +350,15 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 	@Override
 	public void onLocationChanged(Location newLocation) {
-		handleNewLocation(newLocation);
+		Log.d(CameraMap.TAG, "LOCATION CHANGED");
+		mCurrentLocation = newLocation;
+		handleNewLocation(mCurrentLocation);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-
+		Log.d(CameraMap.TAG, "ONSTART");
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
 		mGoogleApiClient.connect();
@@ -313,6 +378,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	@Override
 	public void onStop() {
 		super.onStop();
+		Log.d(CameraMap.TAG, "ONSTOP");
 
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.

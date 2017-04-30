@@ -15,11 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -378,6 +380,60 @@ public final class CameraAPI {
             }
         }
         return false;
+    }
+
+    protected JSONObject getList(String lat, String lng) throws IOException {
+
+        String userPassword = this.getUser() + ":" + this.getPass();
+        String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));
+
+        // chicos, este resource me viene como int, no veo como hacerlo string
+        //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
+        URL url = null;
+        try {
+            url = new URL("http://cameramap.escalared.com/wp-json/cameramap/v1/list?lat=" + lat + "&lng=" + lng);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            urlConnection.setDoOutput(false);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(10000);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Basic " + encoding);
+            urlConnection.connect();
+
+            // Execute HTTP Post Request
+            Log.d( CameraAPI.TAG, "request:" + url.toString() );
+            Log.d( CameraAPI.TAG, "request_method:" + urlConnection.getRequestMethod() );
+            Log.d( CameraAPI.TAG, "response_status:" + urlConnection.getResponseCode() );
+            Log.d( CameraAPI.TAG, "response_message:" + urlConnection.getResponseMessage() );
+
+            if ( urlConnection.getResponseCode() == 200 ){
+                InputStream inputStream = urlConnection.getInputStream();
+                String result = convertStreamToString( inputStream );
+                Log.d(CameraAPI.TAG, "response:" + result);
+                JSONObject jsonObject = new JSONObject(result);
+                return jsonObject;
+            }
+        } catch (IOException e) {
+            Log.v( CameraAPI.TAG, "IO:" + e.getMessage() );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return null;
     }
 
     protected String convertStreamToString(InputStream is) {

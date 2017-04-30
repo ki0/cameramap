@@ -54,11 +54,7 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
                 } else this.setHttpResult(false);
                 break;
             case "list":
-                try {
-                    result = CameraAPI.getInstance().getList(params[3].toString(), params[4].toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                result = CameraAPI.getInstance().getList(params[3].toString(), params[4].toString());
                 if (result.has("posts")){
                     this.setJsonResult(result);
                     this.setHttpResult(true);

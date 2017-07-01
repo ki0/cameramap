@@ -8,70 +8,66 @@
   	<ImageView  
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-		android:scaleType="centerCrop"
+        android:scaleType="centerCrop"
         android:src="@drawable/background_login"
         android:contentDescription="@string/background" />
   
   	<TextView
         android:id="@+id/login_text"
-        android:paddingStart="35dp"
+        android:paddingLeft="35sp"
+        android:paddingRight="35sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/login_text"
         android:textSize="12sp"
         android:text="@string/login_tag"
-        android:layout_above="@+id/pass"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="false"
-        android:layout_marginTop="10sp"
-        android:layout_marginLeft="30sp"
-        android:layout_marginBottom="12sp" />
+        android:layout_above="@+id/pass_text"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/login"
+        android:layout_marginTop="10sp" />
     
     <EditText
-        android:labelFor="@+id/login"
+        android:labelFor="@id/login"
         android:inputType="text"
         android:id="@+id/login"
-        android:layout_width="190dip"
-        android:layout_marginEnd="12sp"
+        android:layout_width="220dip"
+        android:layout_marginRight="35sp"
+        android:layout_marginLeft="12sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/pass"
         android:layout_alignEnd="@+id/login_text"
 		android:textSize="12sp"
-		android:singleLine="true"
-        android:layout_marginRight="35sp" />
+		android:maxLines="1"
+    />
     
     <TextView
         android:id="@+id/pass_text"
-        android:paddingStart="35dp"
-        android:layout_marginBottom="12sp"
+        android:paddingLeft="35sp"
+        android:paddingRight="35sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/checkbox"
 		android:textSize="12sp"
         android:text="@string/pass_text"
-        android:layout_below="@+id/login"
-        android:layout_marginTop="10sp"
-        android:layout_marginLeft="30sp" />
+        android:layout_alignTop="@+id/pass"
+        android:layout_marginTop="10sp" />
     
     <EditText
-        android:labelFor="@id/pass"
+        android:labelFor="@+id/pass"
         android:inputType="textPassword"
         android:id="@+id/pass"
-        android:layout_width="190dip"
-        android:layout_marginEnd="12sp"
-        android:layout_marginBottom="12sp"
+        android:layout_width="220dip"
+        android:layout_marginRight="35sp"
+        android:layout_marginLeft="12sp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/checkbox"
         android:layout_alignEnd="@+id/pass_text"
 		android:textSize="12sp"
-		android:singleLine="true"
-        android:layout_marginRight="35sp" />
+		android:maxLines="1"
+    />
     
     <CheckBox android:id="@+id/checkbox"
     	android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-        android:layout_marginBottom="12sp"
         android:textSize="12sp"
         android:layout_above="@+id/loginButton"
         android:layout_centerHorizontal="true"

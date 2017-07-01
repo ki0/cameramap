@@ -78,7 +78,7 @@
     <EditText
         android:labelFor="@id/eLocation"
         android:id="@+id/eLocation"
-        android:layout_width="260dip"
+        android:layout_width="220dip"
         android:layout_height="wrap_content"
         android:layout_above="@+id/eComen"
         android:layout_alignParentEnd="true"
@@ -101,7 +101,7 @@
     <EditText
         android:labelFor="@id/eComen"
         android:id="@+id/eComen"
-        android:layout_width="260dip"
+        android:layout_width="220dip"
         android:layout_height="wrap_content"
 		android:textSize="12sp"
 		android:inputType="textLongMessage"

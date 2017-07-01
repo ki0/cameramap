@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,16 +31,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class CameraMap extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
@@ -95,17 +91,9 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		// Segun la opcion seleccionada pues haremos una funcion u otra.
 		switch (iMenu.getItemId()) {
 			case UPLOAD:
-				if (d == null) {
-					iMenu.setIntent(new Intent(this, Form.class));
-					startActivityForResult(iMenu.getIntent(), GET_CODE);
-					return true;
-				} else {
-					Intent upload = new Intent(this, Form.class);
-					upload.putExtras(d);
-					iMenu.setIntent(upload);
-					startActivityForResult(iMenu.getIntent(), GET_CODE);
-					return true;
-				}
+				iMenu.setIntent(new Intent(this, Form.class));
+				startActivityForResult(iMenu.getIntent(), GET_CODE);
+				return true;
 			case (QUIT1):
 				finish();
 				return true;
@@ -118,30 +106,11 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 		switch (which) {
 			case 0:
-				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker1)));
+				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.mm_36_glow)));
 			case 1:
-				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker2)));
-			case 2:
-				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker3)));
-			case 3:
-				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker4)));
-			default:
 				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.androidmarker)));
-		}
-	}
-
-	private Integer selectMarkers (String which){
-		switch (which){
-			case "Infrarrojos":
-				return 0;
-			case "Domo":
-				return 1;
-			case "Fina":
-				return 2;
-			case "Bala":
-				return 3;
 			default:
-				return 4;
+				return (new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.mm_36_olive)));
 		}
 	}
 
@@ -228,13 +197,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	public void onMapReady(GoogleMap googleMap) {
 		Log.d(CameraMap.TAG, "Google Map is READY");
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			// TODO: Consider calling
-			//    ActivityCompat#requestPermissions
-			// here to request the missing permissions, and then overriding
-			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-			//                                          int[] grantResults)
-			// to handle the case where the user grants the permission. See the documentation
-			// for ActivityCompat#requestPermissions for more details.
 			return;
 		}
 		map = googleMap;
@@ -245,13 +207,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	public void onConnected(Bundle d) {
 		Log.d(CameraMap.TAG, "ONCONNECTED");
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			// TODO: Consider calling
-			//    ActivityCompat#requestPermissions
-			// here to request the missing permissions, and then overriding
-			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-			//                                          int[] grantResults)
-			// to handle the case where the user grants the permission. See the documentation
-			// for ActivityCompat#requestPermissions for more details.
 			return;
 		}
 		if ( mCurrentLocation == null ){
@@ -259,7 +214,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			Log.d(CameraMap.TAG, "Location: " + mCurrentLocation);
 			LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 			LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-			addMarkerToMap(latLng, 4);
+			addMarkerToMap(latLng, 1);
 			getAroundCameras(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 		}
 	}
@@ -268,8 +223,7 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		Log.d(CameraMap.TAG, newLocation.toString());
 		LatLng latLng = new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
 		getAroundCameras(newLocation.getLatitude(), newLocation.getLongitude());
-		// Segun los datos que le hayamos pasado desde el formulario mostramos un marcador u otro.
-		addMarkerToMap(latLng, d.getInt("tipo"));
+		addMarkerToMap(latLng, 0);
 	}
 
 	private void addMarkerToMap(LatLng latLng, Integer selector){
@@ -293,7 +247,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 		http.showDialogSpin = false;
 		http.execute(CameraAPI.getInstance().getUser(), CameraAPI.getInstance().getPass(), "list", lat, lng);
 
-		// Este thread espera hasta que el login ok, entonces guardamos en la bd.
 		new Thread() {
 			public void run() {
 				while (!http.getStatus().equals(AsyncTask.Status.FINISHED)){}
@@ -317,18 +270,20 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 			JSONArray jsonArray = jsonObject.getJSONArray("posts");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject explrObject = jsonArray.getJSONObject(i);
-				Log.d(CameraMap.TAG, "Post: " + explrObject.toString());
 				Log.d(CameraMap.TAG, "Latitude: " + explrObject.getString("lat").toString() + " Longuitude: " + explrObject.getString("lng").toString());
 				LatLng latLng = new LatLng(Double.parseDouble(explrObject.getString("lat")), Double.parseDouble(explrObject.getString("lng")));
-				String post_content = explrObject.getString("post_content");
-				Pattern pattern = Pattern.compile(".*Type of camera: (.*?)\n");
-				Matcher matcher = pattern.matcher(post_content);
-				Integer which = 4;
-				while (matcher.find()) {
-					Log.d(CameraMap.TAG, "Matcher: " + matcher.group(1));
-					which = selectMarkers(matcher.group(1));
+				Location actualLocation = new Location("");
+				actualLocation.setLatitude(latLng.latitude);
+				actualLocation.setLongitude(latLng.longitude);
+				float distanceInMetersOne = actualLocation.distanceTo(mCurrentLocation);
+				//
+				Log.d(CameraMap.TAG, "currtent: " + mCurrentLocation.toString() + "actual: " + actualLocation.toString());
+				if ( (distanceInMetersOne <= 1.0) && ( d != null)){
+					Log.d(CameraMap.TAG, "currtent: " + mCurrentLocation.toString() + "actual: " + actualLocation.toString());
+					addMarkersToMap(latLng, 0);
+				} else {
+					addMarkersToMap(latLng, 3);
 				}
-				addMarkersToMap(latLng, which);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -350,7 +305,6 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 	protected void onResume() {
 		Log.d(CameraMap.TAG, "ONRESUME");
 		super.onResume();
-		//setUpMap();
 		mGoogleApiClient.connect();
 	}
 

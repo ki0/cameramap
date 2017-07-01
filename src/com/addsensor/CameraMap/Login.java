@@ -116,10 +116,7 @@ public class Login extends Activity {
                         }
                     }
                     db.close();
-                } else {
-                    Toast.makeText(Login.this, "*** ERROR: Something went wrong ***", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }

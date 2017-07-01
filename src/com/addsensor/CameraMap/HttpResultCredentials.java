@@ -6,15 +6,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 /**
  * Created by frodriguez on 21/02/2016.
  */
 public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject> {
+    private int errorSwitch;
     private static final String TAG = "HttpResultCredentials";
     private ProgressDialog progress;
     private Context context;
@@ -36,24 +34,27 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
 
     @Override
     protected JSONObject doInBackground(Object... params) {
-        // Por debajo del ProgressBar hacemos el logeo
-        Log.d(HttpResultCredentials.TAG, "login: " + params[0] + "// pass: " + params[1] + "// process: " + params[2]);
         JSONObject result = null;
-        CameraAPI.getInstance().setUser(params[0].toString());
-        CameraAPI.getInstance().setPass(params[1].toString());
+
         switch (params[2].toString()){
             case "login":
+                errorSwitch = 1;
+                Log.d(HttpResultCredentials.TAG, "login: " + params[0] + "// pass: " + params[1] + "// process: " + params[2]);
+                CameraAPI.getInstance().setUser(params[0].toString());
+                CameraAPI.getInstance().setPass(params[1].toString());
                 if (CameraAPI.getInstance().checkLogin() ) {
                     this.setHttpResult(true);
                     Log.d(HttpResultCredentials.TAG, "TODO OK  " + CameraAPI.getInstance().getStatusLogin());
                 } else this.setHttpResult(false);
                 break;
             case "upload":
+                errorSwitch = 2;
                 if ( CameraAPI.getInstance().postUpload(params[3].toString(), params[4].toString()) ) {
                    this.setHttpResult(true);
                 } else this.setHttpResult(false);
                 break;
             case "list":
+                errorSwitch = 3;
                 result = CameraAPI.getInstance().getList(params[3].toString(), params[4].toString());
                 if (result.has("posts")){
                     this.setJsonResult(result);
@@ -68,7 +69,7 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
 
     protected void onPreExecute() {
         if ( showDialogSpin ) {
-            // Antes de lo que queremos hacer lanzamos el ProgressBar
+            //Launch progreessBar before do what we want
             progress.setTitle("In process");
             progress.setMessage("Please wait...");
             progress.setIndeterminate(true);
@@ -78,15 +79,24 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
     }
 
     protected void onPostExecute(JSONObject jObj) {
-        // Una vez hecho lo que queriamos quitamos el ProgressBar
+        // Remove progressBar from screen and handle errors
         if (progress.isShowing()) progress.dismiss();
 
         if ( this.getHttpResult() ) {
             this.setHttpResult(CameraAPI.getInstance().getStatusLogin());
         } else {
-            Toast.makeText(context, "ERROR: something went wrong!!", Toast.LENGTH_SHORT).show();
+            switch (errorSwitch){
+                case 1:
+                    Toast.makeText(context, "ERROR: User or password are incorrects!!", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    Toast.makeText(context, "ERROR: Uploading new camera!!", Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    Toast.makeText(context, "ERROR: Getting cameras!!", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+            }
         }
     }
-
-
 }

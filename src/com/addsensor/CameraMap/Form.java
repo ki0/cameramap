@@ -125,19 +125,6 @@ public class Form extends Activity {
 			}
 		});
 
-		// Obtenemos los campos del bundle que se nos pasa desde el mapActivity. Esto se produce
-		// para mantener los datos elegidos durante las posibles interacciones entre el mapActivity y el formulario.
-		Bundle extras = getIntent().getExtras();
-
-		// Establecemos los campos del Bundle en los diferentes objetos del formulario.
-		if (extras != null) {
-			eLocation.setText(extras.getString("add"));
-			eComen.setText(extras.getString("comen"));
-			sTipo.setSelection(extras.getInt("tipo"));
-			sVigilancia.setSelection(extras.getInt("vigila"));
-			sEstado.setSelection(extras.getInt("estado"));
-		}
-
 		// Función que establece un listener en el botón para que cuando hagamos un click haga una llamada
 		// a la galería de Android.
 		bExplorer.setOnClickListener(new View.OnClickListener() {
@@ -182,9 +169,9 @@ public class Form extends Activity {
 									comentario = eComen.getText().toString();
 									b.putString("add", address);
 									b.putString("comen", comentario);
-									b.putInt("tipo", tipo);
-									b.putInt("vigila", vigilancia);
-									b.putInt("estado", estado);
+									b.putInt("tipo", getCategoriesID(tipo));
+									b.putInt("vigila", getVigilanceID(vigilancia));
+									b.putInt("estado", getStateID(estado));
 									map.putExtras(b);
 									setResult(0, map);
 									finish();
@@ -204,20 +191,56 @@ public class Form extends Activity {
 	}
 
 	private String getFromJSON () {
-		Resources res = getResources();
-		String[] aTypes = res.getStringArray(R.array.cMarkers);
-		String[] aVig = res.getStringArray(R.array.cVigilancia);
-		String[] aState = res.getStringArray(R.array.cEstado);
+		int categoryID = getCategoriesID(tipo);
+		int stateID = getStateID(estado);
+		int vigilanceID = getVigilanceID(vigilancia);
 		Address addss = getAddress(address);
 		JSONObject json = new JSONObject();
 		try {
 			json.put("title", eLocation.getText().toString());
-			json.put("content", "[geo_mashup_map map_content=\"single\"]" + "\n" + "[geo_mashup_save_location lat=\"" + addss.getLatitude() + "\"" + " lng=\"" + addss.getLongitude() + "\"" + "]" + "\n" + "Type of camera: " + aTypes[tipo] + "\n" + "Alert of vigilance: " + aVig[vigilancia] + "\n" + "Private/Public: " + aState[estado] + "\n" + "Comments: " + eComen.getText().toString() + "\n");
+			json.put("categories", categoryID);
+			json.put("estado", stateID);
+			json.put("alerta", vigilanceID);
+			json.put("content", "[geo_mashup_save_location lat=\"" + addss.getLatitude() + "\"" + " lng=\"" + addss.getLongitude() + "\"" + "]" + "\n" + eComen.getText().toString() + "\n");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		Log.d(Form.TAG, "JSON: " + json.toString());
 		return json.toString();
+	}
+
+	private int getCategoriesID(int which){
+		switch (which){
+			case 0:
+				return 8;
+			case 1:
+				return 7;
+			case 2:
+				return 6;
+			case 3:
+				return 1;
+		}
+		return 0;
+	}
+
+	private int getStateID(int which){
+		switch (which){
+			case 0:
+				return 2;
+			case 1:
+				return 3;
+		}
+		return 0;
+	}
+
+	private int getVigilanceID(int which){
+		switch (which){
+			case 0:
+				return 4;
+			case 1:
+				return 5;
+		}
+		return 0;
 	}
 
 	private Address getAddress(String address) {

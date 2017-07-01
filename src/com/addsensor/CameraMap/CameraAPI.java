@@ -59,7 +59,6 @@ public final class CameraAPI {
 
     public boolean checkLogin() {
 
-        //{"login_status": {"errno": 0, "errstr": "OK"}}
         String res = null;
         res = postLogin( getUser(), getPass() );
 
@@ -133,15 +132,26 @@ public final class CameraAPI {
 
     protected Boolean postUpload( String data, String imagePath ) {
 
+        String category = null;
+        String state = null;
+        String alert = null;
         String postID = null;
         String userPassword = this.getUser() + ":" + this.getPass();
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));
 
+        try {
+            JSONObject json = new JSONObject(data);
+            category = json.getString("categories");
+            state = json.getString("estado");
+            alert = json.getString("alerta");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         // chicos, este resource me viene como int, no veo como hacerlo string
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/posts");
+            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/posts?categories=" + category + "&estado=" + state + "&alerta=" + alert);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

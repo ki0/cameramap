@@ -69,7 +69,7 @@ public class CameraAdapterDB {
      public long insert( String login, String pass ) {
     	 ContentValues values = new ContentValues();
     	 if ( !loginExists(login) ) {
-    		 Log.d ( CameraAdapterDB.TAG, "Insertamos en BD" );
+    		 Log.d ( CameraAdapterDB.TAG, "Insert in BD" );
         	 values.put( KEY_LOGIN, login );
         	 values.put( KEY_PASS, pass );
         	 return db.insert( DATABASE_TABLE, null, values ); 
@@ -80,10 +80,9 @@ public class CameraAdapterDB {
      
      // Login already exists
      public boolean loginExists( String key ) {
-    	 Log.d ( CameraAdapterDB.TAG, "El login en la BD" );
+    	 Log.d ( CameraAdapterDB.TAG, "Login exists" );
     	 Cursor auxCursor = null;
     	 try {
-    		 //auxCursor = db.query( DATABASE_TABLE, new String[] { KEY_PASS }, KEY_LOGIN + "=" + key, null, null, null, null );
     		 auxCursor = db.rawQuery("SELECT pass FROM credentials WHERE login='" + key + "';", null);
     	 } catch ( Exception e ) {
     		 System.out.println(e);
@@ -94,18 +93,15 @@ public class CameraAdapterDB {
      
      // Retrieves a particular password
      public Cursor getPass( String key ) {
-    	 Log.d ( CameraAdapterDB.TAG, "Cojemos el PASS" );
+    	 Log.d ( CameraAdapterDB.TAG, "Take key" );
     	 Log.d ( CameraAdapterDB.TAG, "El login es: "  + key );
     	 Cursor auxCursor = null;
     	 try {
-    		 //auxCursor = db.query( DATABASE_TABLE, new String[] { KEY_LOGIN, KEY_PASS }, KEY_LOGIN + "=" + key, null, null, null, null );
     		auxCursor = db.rawQuery("SELECT login, pass FROM credentials WHERE login='" + key + "';", null);
-        	 
     	 } catch ( Exception e ) {
     		 System.out.println(e);
     	 }
     	 if ( auxCursor.getCount() != 0 ) auxCursor.moveToFirst();
-    	 //Log.d ( CameraAdapterDB.TAG, "El cursor es: " + auxCursor);
     	 return auxCursor;
      }
 }

@@ -8,9 +8,9 @@
   	<ImageView  
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/cameramap_splash_screen"
-        android:contentDescription="@string/background"
-        android:layout_alignParentEnd="false" />
+		android:scaleType="centerCrop"
+        android:src="@drawable/background_login"
+        android:contentDescription="@string/background" />
   
   	<TextView
         android:id="@+id/login_text"

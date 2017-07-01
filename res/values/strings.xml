@@ -18,7 +18,7 @@
 	<string name="auth_url">http://cameramap.addsensor.com/accounts/iphone_user_check/</string>
     <string name="background">background</string>
     <string name="login_button">login</string>
-    <string name="login_tag">Login:</string>
+    <string name="login_tag">Username:</string>
     <string name="checkbox_text">remember my account</string>
     <string name="pass_text">Password:</string>
     <string name="account_name">Name:</string>

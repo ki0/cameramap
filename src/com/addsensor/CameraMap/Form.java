@@ -212,13 +212,13 @@ public class Form extends Activity {
 	private int getCategoriesID(int which){
 		switch (which){
 			case 0:
-				return 8;
+				return 4;
 			case 1:
-				return 7;
-			case 2:
-				return 6;
-			case 3:
 				return 1;
+			case 2:
+				return 2;
+			case 3:
+				return 3;
 		}
 		return 0;
 	}
@@ -226,9 +226,9 @@ public class Form extends Activity {
 	private int getStateID(int which){
 		switch (which){
 			case 0:
-				return 2;
+				return 6;
 			case 1:
-				return 3;
+				return 5;
 		}
 		return 0;
 	}
@@ -236,9 +236,9 @@ public class Form extends Activity {
 	private int getVigilanceID(int which){
 		switch (which){
 			case 0:
-				return 4;
+				return 7;
 			case 1:
-				return 5;
+				return 8;
 		}
 		return 0;
 	}

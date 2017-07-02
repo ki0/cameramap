@@ -262,12 +262,12 @@ public class CameraMap extends FragmentActivity implements OnMapReadyCallback, C
 
 	private void mUpdateResultsInUI() {
 		try {
-			JSONObject jsonObject = http.getJsonResult();
-			if (jsonObject == null) {
+			JSONArray jsonArray = http.getJsonResult();
+			if ((jsonArray == null) || (jsonArray.length() == 0)) {
 				Log.d(CameraMap.TAG, "JSON es NULL");
 				return;
 			}
-			JSONArray jsonArray = jsonObject.getJSONArray("posts");
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject explrObject = jsonArray.getJSONObject(i);
 				Log.d(CameraMap.TAG, "Latitude: " + explrObject.getString("lat").toString() + " Longuitude: " + explrObject.getString("lng").toString());

@@ -6,25 +6,25 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 /**
  * Created by frodriguez on 21/02/2016.
  */
-public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject> {
+public class HttpResultCredentials extends AsyncTask<Object, Object, JSONArray> {
     private int errorSwitch;
     private static final String TAG = "HttpResultCredentials";
     private ProgressDialog progress;
     private Context context;
     private Boolean HttpStatus = false;
-    private JSONObject jsonResult = null;
+    private JSONArray jsonResult = null;
     protected Activity activity;
     public Boolean showDialogSpin = true;
 
     public Boolean getHttpResult(){ return this.HttpStatus; }
     private void setHttpResult(Boolean status){ this.HttpStatus = status; }
-    public JSONObject getJsonResult(){ return this.jsonResult; }
-    private void setJsonResult(JSONObject result){ this.jsonResult = result; }
+    public JSONArray getJsonResult(){ return this.jsonResult; }
+    private void setJsonResult(JSONArray result){ this.jsonResult = result; }
 
     public HttpResultCredentials(Activity activity){
         this.activity = activity;
@@ -33,8 +33,8 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
     }
 
     @Override
-    protected JSONObject doInBackground(Object... params) {
-        JSONObject result = null;
+    protected JSONArray doInBackground(Object... params) {
+        JSONArray result = null;
 
         switch (params[2].toString()){
             case "login":
@@ -56,12 +56,9 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
             case "list":
                 errorSwitch = 3;
                 result = CameraAPI.getInstance().getList(params[3].toString(), params[4].toString());
-                if (result.has("posts")){
-                    this.setJsonResult(result);
-                    this.setHttpResult(true);
-                    return  result;
-                } else this.setHttpResult(false);
-                break;
+                this.setJsonResult(result);
+                this.setHttpResult(true);
+                return  result;
             default:
         }
         return result;
@@ -78,7 +75,7 @@ public class HttpResultCredentials extends AsyncTask<Object, Object, JSONObject>
         }
     }
 
-    protected void onPostExecute(JSONObject jObj) {
+    protected void onPostExecute(JSONArray jObj) {
         // Remove progressBar from screen and handle errors
         if (progress.isShowing()) progress.dismiss();
 

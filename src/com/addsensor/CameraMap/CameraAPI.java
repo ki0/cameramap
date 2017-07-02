@@ -88,7 +88,7 @@ public final class CameraAPI {
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/users/me");
+            url = new URL("http://cameramap.fomento20.com/wp-json/wp/v2/users/me");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -151,7 +151,7 @@ public final class CameraAPI {
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/posts?categories=" + category + "&estado=" + state + "&alerta=" + alert);
+            url = new URL("http://cameramap.fomento20.com/wp-json/wp/v2/posts?categories=" + category + "&estado=" + state + "&alerta=" + alert);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -243,7 +243,7 @@ public final class CameraAPI {
         try {
             FileInputStream fileInputStream = new FileInputStream( sourceFile );
 
-            URL url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/media?post=" + id + "");
+            URL url = new URL("http://cameramap.fomento20.com/wp-json/wp/v2/media?post=" + id + "");
 
             urlConnection = (HttpURLConnection) url.openConnection();
 
@@ -328,7 +328,7 @@ public final class CameraAPI {
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/wp/v2/posts/" + id + "");
+            url = new URL("http://cameramap.fomento20.com/wp-json/wp/v2/posts/" + id + "");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -387,7 +387,7 @@ public final class CameraAPI {
         return false;
     }
 
-    protected JSONObject getList(String lat, String lng){
+    protected JSONArray getList(String lat, String lng){
 
         String userPassword = this.getUser() + ":" + this.getPass();
         String encoding = new String(Base64.encodeToString(userPassword.getBytes(), Base64.URL_SAFE|Base64.NO_WRAP));
@@ -396,7 +396,7 @@ public final class CameraAPI {
         //HttpPost httppost = new HttpPost( URI.create( R.string.auth_url ) );
         URL url = null;
         try {
-            url = new URL("http://cameramap.escalared.com/wp-json/cameramap/v1/list?lat=" + lat + "&lng=" + lng);
+            url = new URL("http://cameramap.fomento20.com/wp-json/cameramap/v1/list?lat=" + lat + "&lng=" + lng);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -425,9 +425,9 @@ public final class CameraAPI {
             if ( urlConnection.getResponseCode() == 200 ){
                 InputStream inputStream = urlConnection.getInputStream();
                 String result = convertStreamToString( inputStream );
-                Log.d(CameraAPI.TAG, "response:" + result);
-                JSONObject jsonObject = new JSONObject(result);
-                return jsonObject;
+                Log.d(CameraAPI.TAG, "response:" + result + " length:" + result.length());
+                JSONArray json = new JSONArray(result);
+                return json;
             }
         } catch (IOException e) {
             Log.v( CameraAPI.TAG, "IO:" + e.getMessage() );

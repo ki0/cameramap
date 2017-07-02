@@ -17,7 +17,6 @@
         android:paddingStart="35dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/login_text"
         android:textSize="12sp"
         android:text="@string/login_tag"
         android:layout_above="@+id/pass"

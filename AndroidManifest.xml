@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.addsensor.CameraMap">
+	<compatible-screens>
+		<screen android:screenSize="small" android:screenDensity="ldpi" />
+		<screen android:screenSize="small" android:screenDensity="mdpi" />
+		<screen android:screenSize="small" android:screenDensity="hdpi" />
+		<screen android:screenSize="small" android:screenDensity="xhdpi" />
+		<screen android:screenSize="normal" android:screenDensity="ldpi" />
+		<screen android:screenSize="normal" android:screenDensity="mdpi" />
+		<screen android:screenSize="normal" android:screenDensity="hdpi" />
+		<screen android:screenSize="normal" android:screenDensity="xhdpi" />
+		<screen android:screenSize="large" android:screenDensity="ldpi" />
+		<screen android:screenSize="large" android:screenDensity="mdpi" />
+		<screen android:screenSize="large" android:screenDensity="hdpi" />
+		<screen android:screenSize="large" android:screenDensity="xhdpi" />
+	</compatible-screens>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.CAMERA" />
-    <uses-feature android:name="android.hardware.CAMERA.AUTOFOCUS" />
+    <uses-feature android:name="android.hardware.CAMERA" android:required="false" />
+    <uses-feature android:name="android.hardware.CAMERA.AUTOFOCUS" android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -12,6 +26,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+	<uses-feature android:name="android.hardware.location.gps" />
+	<uses-feature android:name="android.hardware.location.network" />
+	<uses-feature android:name="android.hardware.location" />
 
 	<application android:icon="@mipmap/ic_launcher" android:allowBackup="true">
         <meta-data
